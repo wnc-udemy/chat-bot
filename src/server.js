@@ -1,6 +1,6 @@
 require('dotenv').config();
 import express from 'express';
-import initWebRoute from './routes/web';
+import initWebRoute from './routes/index';
 import bodyParser from 'body-parser';
 
 let app = express();
