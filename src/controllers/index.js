@@ -104,7 +104,11 @@ const callSendAPIWithTemplate = async (sender_psid) => {
     url: `${process.env.BACK_END_URL}/courses?type=1&limit=10&page=1`,
   });
 
+  console.log({courses});
+
   const coursesObj = JSON.parse(courses);
+
+  console.log({coursesObj});
 
   const coursesTemplate = coursesObj.map((e) => {
     const item = {
@@ -122,6 +126,8 @@ const callSendAPIWithTemplate = async (sender_psid) => {
 
     return item;
   });
+
+  console.log({coursesTemplate});
 
   const body = {
     recipient: {
