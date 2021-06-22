@@ -98,10 +98,32 @@ function handleMessage(sender_psid, message) {
   }
 }
 
-let callSendAPIWithTemplate = (sender_psid) => {
+const callSendAPIWithTemplate = (sender_psid) => {
   // document fb message template
-  // https://developers.facebook.com/docs/messenger-platform/send-messages/templates
-  let body = {
+  const courses = await request.get({
+    url: `${process.env.BACK_END_URL}/courses?type=1&limit=10&page=1`,
+  });
+
+  const coursesObj = JSON.parse(courses);
+
+  const coursesTemplate = coursesObj.map((e) => {
+    const item = {
+      title: e.name,
+      image_url: e.urlThumb,
+      subtitle: e.introDescription,
+      buttons: [
+        {
+          type: "web_url",
+          url: `${process.env.FRONT_END_URL}detail-course/${e._id}`,
+          title: "Watch now",
+        },
+      ],
+    };
+
+    return item;
+  });
+
+  const body = {
     recipient: {
       id: sender_psid,
     },
@@ -110,21 +132,7 @@ let callSendAPIWithTemplate = (sender_psid) => {
         type: "template",
         payload: {
           template_type: "generic",
-          elements: [
-            {
-              title: "Want to build sth awesome?",
-              image_url:
-                "https://www.nexmo.com/wp-content/uploads/2018/10/build-bot-messages-api-768x384.png",
-              subtitle: "Watch more videos on my youtube channel ^^",
-              buttons: [
-                {
-                  type: "web_url",
-                  url: "https://bit.ly/subscribe-haryphamdev",
-                  title: "Watch now",
-                },
-              ],
-            },
-          ],
+          elements: coursesTemplate,
         },
       },
     },
@@ -139,7 +147,7 @@ let callSendAPIWithTemplate = (sender_psid) => {
     },
     (err, res, body) => {
       if (!err) {
-        // console.log('message sent!')
+        console.log("message sent!");
       } else {
         console.error("Unable to send message:" + err);
       }
