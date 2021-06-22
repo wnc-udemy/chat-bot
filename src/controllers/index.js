@@ -98,7 +98,7 @@ function handleMessage(sender_psid, message) {
   }
 }
 
-const callSendAPIWithTemplate = (sender_psid) => {
+const callSendAPIWithTemplate = async (sender_psid) => {
   // document fb message template
   const courses = await request.get({
     url: `${process.env.BACK_END_URL}/courses?type=1&limit=10&page=1`,
