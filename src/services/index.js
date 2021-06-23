@@ -2,7 +2,6 @@ import request from "request";
 
 require("dotenv").config();
 
-const FB_PAGE_TOKEN = process.env.FB_PAGE_TOKEN;
 const URL_SHOW_ROOM_GIF = "https://media3.giphy.com/media/TGcD6N8uzJ9FXuDV3a/giphy.gif?cid=ecf05e47afe5be971d1fe6c017ada8e15c29a76fc524ac20&rid=giphy.gif";
 const URL_SALAD_GIF = "https://media0.giphy.com/media/9Vk8qP9EmWB8FePccb/giphy.gif?cid=ecf05e478d0c93d69e72264c8ebbf58a9a1d7ae294754131&rid=giphy.gif";
 const URL_SHOW_FISH = "https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_508,h_320,c_fill/ztjeouq2jlas5b2zxksm";
@@ -10,7 +9,7 @@ const URL_SHOW_CLASSIC = "https://ardo.com/files/attachments/.10202/w1440h700q85
 let getFacebookUsername = (sender_psid) => {
     return new Promise((resolve, reject) => {
         // Send the HTTP request to the Messenger Platform
-        let uri = `https://graph.facebook.com/${sender_psid}?fields=first_name,last_name,profile_pic&access_token=${FB_PAGE_TOKEN}`;
+        let uri = `https://graph.facebook.com/${sender_psid}?fields=first_name,last_name,profile_pic&access_token=${process.env.FB_PAGE_TOKEN}`;
         request({
             "uri": uri,
             "method": "GET",
@@ -606,7 +605,7 @@ let sendMessageAskingQuality = (sender_id) => {
     // Send the HTTP request to the Messenger Platform
     request({
         "uri": "https://graph.facebook.com/v6.0/me/messages",
-        "qs": { "access_token": FB_PAGE_TOKEN },
+        "qs": { "access_token": process.env.FB_PAGE_TOKEN },
         "method": "POST",
         "json": request_body
     }, (err, res, body) => {
@@ -637,7 +636,7 @@ let sendMessageAskingPhoneNumber = (sender_id) => {
     // Send the HTTP request to the Messenger Platform
     request({
         "uri": "https://graph.facebook.com/v6.0/me/messages",
-        "qs": { "access_token": FB_PAGE_TOKEN },
+        "qs": { "access_token": process.env.FB_PAGE_TOKEN },
         "method": "POST",
         "json": request_body
     }, (err, res, body) => {
@@ -713,12 +712,12 @@ let sendMessageDefaultForTheBot = (sender_psid) => {
                         "template_type": "media",
                         "elements": [
                             {
-                                "media_type": "video",
-                                "url": "https://www.facebook.com/haryphamdev/videos/635394223852656/",
+                                "media_type": "image",
+                                "url": "https://i.imgur.com/gMca41Y.jpg/",
                                 "buttons": [
                                     {
                                         "type": "web_url",
-                                        "url": "https://bit.ly/subscribe-haryphamdev",
+                                        "url": "https://wnc-frontend.farmhub.asia/",
                                         "title": "Watch more!"
                                     },
                                     {
@@ -936,7 +935,7 @@ let sendMessage = (sender_psid, response) => {
             // Send the HTTP request to the Messenger Platform
             request({
                 "uri": "https://graph.facebook.com/v6.0/me/messages",
-                "qs": { "access_token": FB_PAGE_TOKEN },
+                "qs": { "access_token": process.env.FB_PAGE_TOKEN },
                 "method": "POST",
                 "json": request_body
             }, (err, res, body) => {

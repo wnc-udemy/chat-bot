@@ -5,9 +5,6 @@ import chatBotService from "../services";
 
 const BACK_END_URL = process.env.BACK_END_URL;
 const FRONT_END_URL = process.env.FRONT_END_URL;
-const FB_PAGE_TOKEN = process.env.FB_PAGE_TOKEN;
-const VERIFY_TOKEN = process.env.MY_VERIFY_FB_TOKEN;
-
 
 let user = {
   name: "",
@@ -56,6 +53,8 @@ let postWebhook = (req, res) => {
 };
 
 let getWebhook = (req, res) => {
+  const VERIFY_TOKEN = process.env.MY_VERIFY_FB_TOKEN;
+
   // Parse the query params
   let mode = req.query['hub.mode'];
   let token = req.query['hub.verify_token'];
@@ -264,7 +263,7 @@ function callSendAPI(sender_psid, response) {
   // Send the HTTP request to the Messenger Platform
   request({
       "uri": "https://graph.facebook.com/v6.0/me/messages",
-      "qs": { "access_token": FB_PAGE_TOKEN },
+      "qs": { "access_token": process.env.FB_PAGE_TOKEN },
       "method": "POST",
       "json": request_body
   }, (err, res, body) => {
