@@ -10,7 +10,7 @@ const URL_SHOW_CLASSIC = "https://ardo.com/files/attachments/.10202/w1440h700q85
 let getFacebookUsername = (sender_psid) => {
     return new Promise((resolve, reject) => {
         // Send the HTTP request to the Messenger Platform
-        let uri = `https://graph.facebook.com/${sender_psid}?fields=first_name,last_name,profile_pic&access_token=${PAGE_ACCESS_TOKEN}`;
+        let uri = `https://graph.facebook.com/${sender_psid}?fields=first_name,last_name,profile_pic&access_token=${FB_PAGE_TOKEN}`;
         request({
             "uri": uri,
             "method": "GET",
@@ -606,7 +606,7 @@ let sendMessageAskingQuality = (sender_id) => {
     // Send the HTTP request to the Messenger Platform
     request({
         "uri": "https://graph.facebook.com/v6.0/me/messages",
-        "qs": { "access_token": PAGE_ACCESS_TOKEN },
+        "qs": { "access_token": FB_PAGE_TOKEN },
         "method": "POST",
         "json": request_body
     }, (err, res, body) => {
@@ -637,7 +637,7 @@ let sendMessageAskingPhoneNumber = (sender_id) => {
     // Send the HTTP request to the Messenger Platform
     request({
         "uri": "https://graph.facebook.com/v6.0/me/messages",
-        "qs": { "access_token": PAGE_ACCESS_TOKEN },
+        "qs": { "access_token": FB_PAGE_TOKEN },
         "method": "POST",
         "json": request_body
     }, (err, res, body) => {
@@ -936,7 +936,7 @@ let sendMessage = (sender_psid, response) => {
             // Send the HTTP request to the Messenger Platform
             request({
                 "uri": "https://graph.facebook.com/v6.0/me/messages",
-                "qs": { "access_token": PAGE_ACCESS_TOKEN },
+                "qs": { "access_token": FB_PAGE_TOKEN },
                 "method": "POST",
                 "json": request_body
             }, (err, res, body) => {
@@ -967,8 +967,8 @@ let sendTypingOn = (sender_psid) => {
 
            // Send the HTTP request to the Messenger Platform
            request({
-               "uri": "https://graph.facebook.com/v6.0/me/messages",
-               "qs": { "access_token": PAGE_ACCESS_TOKEN },
+               "uri": "https://graph.facebook.com/v7.0/me/messages",
+               "qs": { "access_token": process.env.FB_PAGE_TOKEN },
                "method": "POST",
                "json": request_body
            }, (err, res, body) => {
@@ -996,8 +996,8 @@ let markMessageSeen = (sender_psid) => {
 
             // Send the HTTP request to the Messenger Platform
             request({
-                "uri": "https://graph.facebook.com/v6.0/me/messages",
-                "qs": { "access_token": PAGE_ACCESS_TOKEN },
+                "uri": "https://graph.facebook.com/v7.0/me/messages",
+                "qs": { "access_token": process.env.FB_PAGE_TOKEN },
                 "method": "POST",
                 "json": request_body
             }, (err, res, body) => {
