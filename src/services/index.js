@@ -29,7 +29,7 @@ let getFacebookUsername = (sender_psid) => {
 let sendResponseWelcomeNewCustomer = (username, sender_psid) => {
     return new Promise(async (resolve, reject) => {
         try {
-            let response_first = { "text": `Welcome ${username} to HaryPhamDev's Restaurant` };
+            let response_first = { "text": `Welcome ${username} to Farmdemy's web app` };
             let response_second = {
                 "attachment": {
                     "type": "template",
@@ -37,19 +37,19 @@ let sendResponseWelcomeNewCustomer = (username, sender_psid) => {
                         "template_type": "generic",
                         "elements": [
                             {
-                                "title": "HaryPhamDev 's restaurant",
-                                "subtitle": "My restaurant is legendary, its classic wine collection equally so.",
-                                "image_url": "https://bit.ly/imageToSend",
+                                "title": "Want to learn something awesome?",
+                                "image_url": "https://i.imgur.com/MJ6A3Lb.jpg",
+                                "subtitle": "Watch more courses on our website ^^",
                                 "buttons": [
                                     {
                                         "type": "postback",
-                                        "title": "SHOW MAIN MENU",
-                                        "payload": "MAIN_MENU",
+                                        "title": "SHOW CATEGORY",
+                                        "payload": "SHOW_CATEGORY",
                                     },
                                     {
                                         "type": "postback",
-                                        "title": "RESERVE A TABLE",
-                                        "payload": "RESERVE_TABLE",
+                                        "title": "SHOW HIGHLIGHT",
+                                        "payload": "SHOW_HIGHLIGHT",
                                     },
                                     {
                                         "type": "postback",
@@ -78,7 +78,7 @@ let sendResponseWelcomeNewCustomer = (username, sender_psid) => {
     });
 };
 
-let sendMainMenu = (sender_psid) => {
+let sendCategory = (sender_psid) => {
     return new Promise(async (resolve, reject) => {
         try {
             let response = {
@@ -88,8 +88,8 @@ let sendMainMenu = (sender_psid) => {
                         "template_type": "generic",
                         "elements": [
                             {
-                                "title": "Our menus",
-                                "subtitle": "We are pleased to offer you a wide-range of menu for lunch or dinner.",
+                                "title": "Our categories",
+                                "subtitle": "We are pleased to offer you main categories",
                                 "image_url": "https://bit.ly/imageMenu",
                                 "buttons": [
                                     {
@@ -109,34 +109,6 @@ let sendMainMenu = (sender_psid) => {
                                     }
                                 ],
                             },
-
-                            {
-                                "title": "Hours",
-                                "subtitle": "MON-FRI 10AM - 11PM  | SAT 5PM - 10PM | SUN 5PM - 9PM",
-                                "image_url": " https://bit.ly/imageOpening",
-                                "buttons": [
-                                    {
-                                        "type": "postback",
-                                        "title": "RESERVE A TABLE",
-                                        "payload": "RESERVE_TABLE",
-                                    }
-                                ],
-                            },
-
-                            {
-                                "title": "Banquet Rooms",
-                                "subtitle": "Restaurant accommodates up to 300 seated guests and similar at cocktail receptions",
-                                "image_url": " https://bit.ly/imageShowRooms",
-                                "buttons": [
-                                    {
-                                        "type": "postback",
-                                        "title": "SHOW ROOMS",
-                                        "payload": "SHOW_ROOMS",
-                                    }
-                                ],
-                            }
-
-
                         ]
                     }
                 }
@@ -1014,26 +986,26 @@ let markMessageSeen = (sender_psid) => {
 };
 
 module.exports = {
-    getFacebookUsername: getFacebookUsername,
-    sendResponseWelcomeNewCustomer: sendResponseWelcomeNewCustomer,
-    sendMainMenu: sendMainMenu,
-    sendLunchMenu: sendLunchMenu,
-    sendDinnerMenu: sendDinnerMenu,
-    sendPubMenu: sendPubMenu,
-    sendAppetizer: sendAppetizer,
-    goBackToMainMenu: goBackToMainMenu,
-    goBackToLunchMenu: goBackToLunchMenu,
-    handleReserveTable: handleReserveTable,
-    handleShowRooms: handleShowRooms,
-    sendMessageAskingQuality: sendMessageAskingQuality,
-    sendMessageAskingPhoneNumber: sendMessageAskingPhoneNumber,
-    sendMessageDoneReserveTable: sendMessageDoneReserveTable,
-    sendMessageDefaultForTheBot:sendMessageDefaultForTheBot,
-    showRoomDetail: showRoomDetail,
-    sendSalad: sendSalad,
-    sendFish: sendFish,
-    sendClassic:sendClassic,
-    markMessageSeen: markMessageSeen,
-    sendTypingOn: sendTypingOn,
-    sendMessage: sendMessage
+    getFacebookUsername,
+    sendResponseWelcomeNewCustomer,
+    sendCategory,
+    sendLunchMenu,
+    sendDinnerMenu,
+    sendPubMenu,
+    sendAppetizer,
+    goBackToMainMenu,
+    goBackToLunchMenu,
+    handleReserveTable,
+    handleShowRooms,
+    sendMessageAskingQuality,
+    sendMessageAskingPhoneNumber,
+    sendMessageDoneReserveTable,
+    sendMessageDefaultForTheBot,
+    showRoomDetail,
+    sendSalad,
+    sendFish,
+    sendClassic,
+    markMessageSeen,
+    sendTypingOn,
+    sendMessage
 };

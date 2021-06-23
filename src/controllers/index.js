@@ -192,9 +192,9 @@ let handlePostback = async (sender_psid, received_postback) => {
 
           await chatBotService.sendResponseWelcomeNewCustomer(username, sender_psid);
           break;
-      case "MAIN_MENU":
+      case "SHOW_CATEGORY":
           //send main menu to users
-          await chatBotService.sendMainMenu(sender_psid);
+          await chatBotService.sendCategory(sender_psid);
           break;
       case "LUNCH_MENU":
           await chatBotService.sendLunchMenu(sender_psid);
