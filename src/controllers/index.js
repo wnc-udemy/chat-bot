@@ -1,5 +1,6 @@
 require("dotenv").config();
 import request from "request";
+import requestPromise from "request-promise";
 
 // Sends response messages via the Send API
 function callSendAPI(sender_psid, response) {
@@ -102,7 +103,7 @@ const callSendAPIWithTemplate = async (sender_psid) => {
   console.log({sender_psid});
 
   // document fb message template
-  const courses = await request.get({
+  const courses = await requestPromise.get({
     url: `${process.env.BACK_END_URL}courses?type=1&limit=10&page=1`,
   });
 
