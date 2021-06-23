@@ -709,16 +709,17 @@ let sendMessageDefaultForTheBot = (sender_psid) => {
                 "attachment": {
                     "type": "template",
                     "payload": {
-                        "template_type": "media",
+                        "template_type": "generic",
                         "elements": [
                             {
-                                "media_type": "image",
-                                "url": "https://i.imgur.com/gMca41Y.jpg/",
+                                "title": "Want to learn something awesome?",
+                                "image_url": "https://i.imgur.com/MJ6A3Lb.jpg",
+                                "subtitle": "Watch more courses on our website ^^",
                                 "buttons": [
                                     {
                                         "type": "web_url",
                                         "url": "https://wnc-frontend.farmhub.asia/",
-                                        "title": "Watch more!"
+                                        "title": "Watch now"
                                     },
                                     {
                                         "type": "postback",
