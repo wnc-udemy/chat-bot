@@ -88,7 +88,7 @@ let sendResponseWelcomeNewCustomer = (username, sender_psid) => {
   });
 };
 
-let sendCategory = (sender_psid) => {
+let sendCategory = async (sender_psid) => {
   const categoriesString = await requestPromise.get({
     url: `${process.env.BACK_END_URL}categories?type=1&limit=10&page=1`,
   });
