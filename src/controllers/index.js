@@ -76,8 +76,6 @@ let handleMessage = async (sender_psid, message) => {
     if (message.quick_reply.payload.includes('CATEGORY_ID')) {
       const categoryID = message.quick_reply.payload.substring(12);
 
-      console.log({ categoryID });
-
       await chatBotService.markMessageSeen(sender_psid);
       await chatBotService.sendTypingOn(sender_psid);
       await chatBotService.sendSubCategories(sender_psid, categoryID);
@@ -108,7 +106,6 @@ let handleMessage = async (sender_psid, message) => {
 
   //handle text message
   let entity = handleMessageWithEntities(message);
-  let locale = entity.locale;
 
   await chatBotService.sendTypingOn(sender_psid);
   await chatBotService.markMessageSeen(sender_psid);

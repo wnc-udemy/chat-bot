@@ -188,7 +188,7 @@ let sendSubCategories = async (sender_psid, categoryID) => {
 
   const categoriesObj = JSON.parse(categoriesString);
 
-  const idxCategory = categoriesObj.findIndex(e._id === categoryID);
+  const idxCategory = categoriesObj.findIndex((e) => e._id === categoryID);
 
   if (idxCategory === -1) {
     return sendCategory(sender_psid);
