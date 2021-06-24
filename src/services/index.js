@@ -289,8 +289,10 @@ let sendCourses = async (sender_psid, type, payload) => {
 
       if (type === 4) {
         if (subCategoryID !== undefined) {
+          console.log({ subCategoryID });
+
           coursesString = await requestPromise.get({
-            url: `${process.env.BACK_END_URL}courses?type=${type}&subCategory=${subCategoryID}&limit=4&page=1`,
+            url: `${process.env.BACK_END_URL}courses?type=${type}&subCategory=${subCategoryID}&limit=3&page=1`,
           });
         }
       } else {
@@ -299,13 +301,11 @@ let sendCourses = async (sender_psid, type, payload) => {
 
       const coursesObj = JSON.parse(coursesString).courses;
 
-      console.log({ coursesObj });
-
       const coursesTemplate = coursesObj.map((e) => {
         const item = {
           title: e.name,
           image_url: e.urlThumb,
-          text: `fee ${e.fee}`,
+          // text: `fee ${e.fee}`,
           buttons: [
             {
               type: 'postback',
@@ -317,8 +317,6 @@ let sendCourses = async (sender_psid, type, payload) => {
 
         return item;
       });
-
-      console.log({ coursesTemplate });
 
       const goBackItem = {
         title: 'Go back',
@@ -344,7 +342,7 @@ let sendCourses = async (sender_psid, type, payload) => {
           type: 'template',
           payload: {
             template_type: 'generic',
-            elements: [],
+            elements: coursesTemplate,
           },
         },
       };
