@@ -299,6 +299,8 @@ let sendCourses = async (sender_psid, type, payload) => {
 
       const coursesObj = JSON.parse(coursesString).courses;
 
+      console.log({ coursesObj });
+
       const coursesTemplate = coursesObj.map((e) => {
         const item = {
           title: e.name,
@@ -315,6 +317,8 @@ let sendCourses = async (sender_psid, type, payload) => {
 
         return item;
       });
+
+      console.log({ coursesTemplate });
 
       const goBackItem = {
         title: 'Go back',
