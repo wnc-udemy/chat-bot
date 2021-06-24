@@ -303,7 +303,7 @@ let sendCourses = async (sender_psid, type, payload) => {
         const item = {
           title: e.name,
           image_url: e.urlThumb,
-          text: `fee ${e.fee}`,
+          // text: `fee ${e.fee}`,
           buttons: [
             {
               type: 'postback',
@@ -369,7 +369,7 @@ let sendDetailCourse = async (sender_psid, courseID) => {
           title: courseObj.name,
           image_url: courseObj.urlThumb,
           subtitle: courseObj.introDescription,
-          text: `fee ${courseObj.fee}`,
+          // text: `fee ${courseObj.fee}`,
           buttons: [
             {
               type: 'web_url',
