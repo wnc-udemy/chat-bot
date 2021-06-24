@@ -367,7 +367,7 @@ let sendDetailCourse = async (sender_psid, courseID) => {
       const coursesTemplate = [
         {
           title: courseObj.name,
-          image_url: courseObj.urlThumb,
+          image_url: courseObj.url,
           subtitle: courseObj.introDescription,
           // text: `fee ${courseObj.fee}`,
           buttons: [
