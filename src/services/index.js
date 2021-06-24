@@ -294,10 +294,10 @@ let sendCourses = async (sender_psid, type, payload) => {
           });
         }
       } else {
-        sendMainMenu(sender_psid);
+        return sendMainMenu(sender_psid);
       }
 
-      const coursesObj = JSON.parse(coursesString);
+      const coursesObj = JSON.parse(coursesString).courses;
 
       const coursesTemplate = coursesObj.map((e) => {
         const item = {
