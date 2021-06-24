@@ -58,7 +58,7 @@ let sendResponseWelcomeNewCustomer = (username, sender_psid) => {
                   },
                   {
                     type: 'postback',
-                    title: 'SHOW HIGHLIGHT',
+                    title: 'SHOW COURSE',
                     payload: 'SHOW_COURSE',
                   },
                   {
@@ -112,7 +112,7 @@ let sendCategory = async (sender_psid) => {
     messaging_type: 'RESPONSE',
     message: {
       text: 'Which category do you choose?',
-      quick_replies: [coursesTemplate],
+      quick_replies: coursesTemplate,
     },
   };
 
@@ -735,7 +735,7 @@ let sendMessageDefaultForTheBot = (sender_psid) => {
                   },
                   {
                     type: 'postback',
-                    title: 'SHOW HIGHLIGHT',
+                    title: 'SHOW COURSE',
                     payload: 'SHOW_COURSE',
                   },
                   {
