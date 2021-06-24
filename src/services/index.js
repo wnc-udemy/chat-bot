@@ -289,8 +289,6 @@ let sendCourses = async (sender_psid, type, payload) => {
 
       if (type === 4) {
         if (subCategoryID !== undefined) {
-          console.log({ subCategoryID });
-
           coursesString = await requestPromise.get({
             url: `${process.env.BACK_END_URL}courses?type=${type}&subCategory=${subCategoryID}&limit=3&page=1`,
           });
@@ -305,7 +303,7 @@ let sendCourses = async (sender_psid, type, payload) => {
         const item = {
           title: e.name,
           image_url: e.urlThumb,
-          // text: `fee ${e.fee}`,
+          text: `fee ${e.fee}`,
           buttons: [
             {
               type: 'postback',
@@ -361,7 +359,7 @@ let sendDetailCourse = async (sender_psid, courseID) => {
       console.log({ courseID });
 
       const courseString = await requestPromise.get({
-        url: `${process.env.BACK_END_URL}course/${courseID}`,
+        url: `${process.env.BACK_END_URL}courses/${courseID}`,
       });
 
       const courseObj = JSON.parse(courseString);
@@ -371,6 +369,7 @@ let sendDetailCourse = async (sender_psid, courseID) => {
           title: courseObj.name,
           image_url: courseObj.urlThumb,
           subtitle: courseObj.introDescription,
+          text: `fee ${courseObj.fee}`,
           buttons: [
             {
               type: 'web_url',

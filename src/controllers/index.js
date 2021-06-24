@@ -183,7 +183,7 @@ let handlePostback = async (sender_psid, received_postback) => {
 
   if (payload.includes('SHOW_DETAIL')) {
     const courseID = payload.substring(12);
-    await chatBotService.sendCourse(sender_psid, courseID);
+    await chatBotService.sendDetailCourse(sender_psid, courseID);
     return;
   }
 
