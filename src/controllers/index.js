@@ -73,15 +73,6 @@ let getWebhook = (req, res) => {
 let handleMessage = async (sender_psid, message) => {
   //checking quick reply
   if (message && message.quick_reply && message.quick_reply.payload) {
-    if (message.quick_reply.payload.includes('CATEGORY_ID')) {
-      const categoryID = message.quick_reply.payload.substring(12);
-
-      await chatBotService.markMessageSeen(sender_psid);
-      await chatBotService.sendTypingOn(sender_psid);
-      await chatBotService.sendSubCategories(sender_psid, categoryID);
-      return;
-    }
-
     if (message.quick_reply.payload.includes('SUB_CATEGORY_ID')) {
       const subCategoryID = message.quick_reply.payload.substring(16);
 
@@ -93,6 +84,15 @@ let handleMessage = async (sender_psid, message) => {
         sender_psid,
         subCategoryID
       );
+      return;
+    }
+
+    if (message.quick_reply.payload.includes('CATEGORY_ID')) {
+      const categoryID = message.quick_reply.payload.substring(12);
+
+      await chatBotService.markMessageSeen(sender_psid);
+      await chatBotService.sendTypingOn(sender_psid);
+      await chatBotService.sendSubCategories(sender_psid, categoryID);
       return;
     }
 
