@@ -107,7 +107,7 @@ let sendCategory = async (sender_psid) => {
 
   let request_body = {
     recipient: {
-      id: sender_id,
+      id: sender_psid,
     },
     messaging_type: 'RESPONSE',
     message: {
@@ -729,14 +729,19 @@ let sendMessageDefaultForTheBot = (sender_psid) => {
                 subtitle: 'Watch more courses on our website ^^',
                 buttons: [
                   {
-                    type: 'web_url',
-                    url: 'https://wnc-frontend.farmhub.asia/',
-                    title: 'Watch now',
+                    type: 'postback',
+                    title: 'SHOW CATEGORY',
+                    payload: 'SHOW_CATEGORY',
                   },
                   {
                     type: 'postback',
-                    title: 'Start over',
-                    payload: 'RESTART_CONVERSATION',
+                    title: 'SHOW HIGHLIGHT',
+                    payload: 'SHOW_COURSE',
+                  },
+                  {
+                    type: 'postback',
+                    title: 'GUIDE TO USE THIS BOT',
+                    payload: 'GUIDE_BOT',
                   },
                 ],
               },
