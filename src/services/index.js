@@ -660,183 +660,6 @@ let goBackToMainMenu = (sender_psid) => {
   sendMainMenu(sender_psid);
 };
 
-let goBackToLunchMenu = (sender_psid) => {
-  sendLunchMenu(sender_psid);
-};
-
-let handleReserveTable = (sender_psid) => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      let username = await getFacebookUsername(sender_psid);
-      let response = {
-        text: `Hi ${username}, What time and date you would like to reserve a table ?`,
-      };
-      await sendTypingOn(sender_psid);
-      await sendMessage(sender_psid, response);
-    } catch (e) {
-      reject(e);
-    }
-  });
-};
-
-let handleShowRooms = (sender_psid) => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      let response = {
-        attachment: {
-          type: 'template',
-          payload: {
-            template_type: 'generic',
-            elements: [
-              {
-                title: 'Bull Moose Room',
-                subtitle: 'The room is suited for parties of up to 25 people',
-                image_url: 'https://bit.ly/showRoom1',
-                buttons: [
-                  {
-                    type: 'postback',
-                    title: 'SHOW DESCRIPTION',
-                    payload: 'SHOW_ROOM_DETAIL',
-                  },
-                ],
-              },
-
-              {
-                title: 'Lillie Langstry Room',
-                subtitle: 'The room is suited for parties of up to 35 people',
-                image_url: 'https://bit.ly/showRoom2',
-                buttons: [
-                  {
-                    type: 'postback',
-                    title: 'SHOW DESCRIPTION',
-                    payload: 'SHOW_ROOM_DETAIL',
-                  },
-                ],
-              },
-
-              {
-                title: 'Lincoln Room',
-                subtitle: 'The room is suited for parties of up to 45 people',
-                image_url: 'https://bit.ly/showRoom3',
-                buttons: [
-                  {
-                    type: 'postback',
-                    title: 'SHOW DESCRIPTION',
-                    payload: 'SHOW_ROOM_DETAIL',
-                  },
-                ],
-              },
-
-              {
-                title: 'Go back',
-                image_url: ' https://bit.ly/imageToSend',
-                buttons: [
-                  {
-                    type: 'postback',
-                    title: 'BACK TO MAIN MENU',
-                    payload: 'BACK_TO_MAIN_MENU',
-                  },
-                  {
-                    type: 'postback',
-                    title: 'RESERVE A TABLE',
-                    payload: 'RESERVE_TABLE',
-                  },
-                ],
-              },
-            ],
-          },
-        },
-      };
-
-      //send a welcome message
-      await sendTypingOn(sender_psid);
-      await sendMessage(sender_psid, response);
-    } catch (e) {
-      reject(e);
-    }
-  });
-};
-
-let sendMessageAskingQuality = (sender_id) => {
-  let request_body = {
-    recipient: {
-      id: sender_id,
-    },
-    messaging_type: 'RESPONSE',
-    message: {
-      text: 'What is your party size ?',
-      quick_replies: [
-        {
-          content_type: 'text',
-          title: '1-2',
-          payload: 'SMALL',
-        },
-        {
-          content_type: 'text',
-          title: '2-5',
-          payload: 'MEDIUM',
-        },
-        {
-          content_type: 'text',
-          title: 'more than 5',
-          payload: 'LARGE',
-        },
-      ],
-    },
-  };
-
-  // Send the HTTP request to the Messenger Platform
-  request(
-    {
-      uri: 'https://graph.facebook.com/v6.0/me/messages',
-      qs: { access_token: process.env.FB_PAGE_TOKEN },
-      method: 'POST',
-      json: request_body,
-    },
-    (err, res, body) => {
-      if (!err) {
-        console.log('message sent!');
-      } else {
-        console.error('Unable to send message:' + err);
-      }
-    }
-  );
-};
-
-let sendMessageAskingPhoneNumber = (sender_id) => {
-  let request_body = {
-    recipient: {
-      id: sender_id,
-    },
-    messaging_type: 'RESPONSE',
-    message: {
-      text: "Thank you. And what's the best phone number for us to reach you at?",
-      quick_replies: [
-        {
-          content_type: 'user_phone_number',
-        },
-      ],
-    },
-  };
-
-  // Send the HTTP request to the Messenger Platform
-  request(
-    {
-      uri: 'https://graph.facebook.com/v6.0/me/messages',
-      qs: { access_token: process.env.FB_PAGE_TOKEN },
-      method: 'POST',
-      json: request_body,
-    },
-    (err, res, body) => {
-      if (!err) {
-        console.log('message sent!');
-      } else {
-        console.error('Unable to send message:' + err);
-      }
-    }
-  );
-};
-
 let sendMessageDoneReserveTable = async (sender_id) => {
   try {
     let response = {
@@ -937,51 +760,6 @@ let sendMessageDefaultForTheBot = (sender_psid) => {
   });
 };
 
-let showRoomDetail = (sender_psid) => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      let response1 = {
-        attachment: {
-          type: 'image',
-          payload: {
-            url: URL_SHOW_ROOM_GIF,
-          },
-        },
-      };
-      let response2 = {
-        attachment: {
-          type: 'template',
-          payload: {
-            template_type: 'button',
-            text: `The rooms is suited for parties up to 45 people.`,
-            buttons: [
-              {
-                type: 'postback',
-                title: 'SHOW MAIN MENU',
-                payload: 'MAIN_MENU',
-              },
-              {
-                type: 'postback',
-                title: 'RESERVE A TABLE',
-                payload: 'RESERVE_TABLE',
-              },
-            ],
-          },
-        },
-      };
-
-      await sendTypingOn(sender_psid);
-      await sendMessage(sender_psid, response1);
-      await sendTypingOn(sender_psid);
-      await sendMessage(sender_psid, response2);
-
-      resolve('done!');
-    } catch (e) {
-      reject(e);
-    }
-  });
-};
-
 let sendMessage = (sender_psid, response) => {
   return new Promise((resolve, reject) => {
     try {
@@ -995,14 +773,14 @@ let sendMessage = (sender_psid, response) => {
       // Send the HTTP request to the Messenger Platform
       request(
         {
-          uri: 'https://graph.facebook.com/v6.0/me/messages',
+          uri: 'https://graph.facebook.com/v11.0/me/messages',
           qs: { access_token: process.env.FB_PAGE_TOKEN },
           method: 'POST',
           json: request_body,
         },
         (err, res, body) => {
-          console.log(res);
-          console.log(body);
+          // console.log(res);
+          // console.log(body);
           if (!err) {
             console.log('message sent!');
             resolve('done!');
@@ -1030,7 +808,7 @@ let sendTypingOn = (sender_psid) => {
       // Send the HTTP request to the Messenger Platform
       request(
         {
-          uri: 'https://graph.facebook.com/v7.0/me/messages',
+          uri: 'https://graph.facebook.com/v11.0/me/messages',
           qs: { access_token: process.env.FB_PAGE_TOKEN },
           method: 'POST',
           json: request_body,
@@ -1062,7 +840,7 @@ let markMessageSeen = (sender_psid) => {
       // Send the HTTP request to the Messenger Platform
       request(
         {
-          uri: 'https://graph.facebook.com/v7.0/me/messages',
+          uri: 'https://graph.facebook.com/v11.0/me/messages',
           qs: { access_token: process.env.FB_PAGE_TOKEN },
           method: 'POST',
           json: request_body,
@@ -1095,14 +873,8 @@ module.exports = {
   sendPubMenu,
   sendAppetizer,
   goBackToMainMenu,
-  goBackToLunchMenu,
-  handleReserveTable,
-  handleShowRooms,
-  sendMessageAskingQuality,
-  sendMessageAskingPhoneNumber,
   sendMessageDoneReserveTable,
   sendMessageDefaultForTheBot,
-  showRoomDetail,
   markMessageSeen,
   sendTypingOn,
   sendMessage,
