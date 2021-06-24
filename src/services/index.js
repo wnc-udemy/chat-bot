@@ -136,6 +136,9 @@ let sendMainMenu = (sender_psid) => {
 };
 
 let sendCategories = async (sender_psid) => {
+  await markMessageSeen(sender_psid);
+  await sendTypingOn(sender_psid);
+
   const categoriesString = await requestPromise.get({
     url: `${process.env.BACK_END_URL}categories?type=1&limit=10&page=1`,
   });
@@ -235,12 +238,8 @@ let sendSubCategories = async (sender_psid, categoryID) => {
   );
 };
 
-let sendCoursesFollowSubCategory = async (
-  sender_psid,
-  categoryID,
-  subCategoryID
-) => {
-  return sendCourse(sender_psid, 4, { categoryID, subCategoryID });
+let sendCoursesFollowSubCategory = async (sender_psid, subCategoryID) => {
+  return sendCourses(sender_psid, 4, { subCategoryID });
 };
 
 let sendCourseMenu = async (sender_psid) => {
@@ -285,15 +284,15 @@ let sendCourseMenu = async (sender_psid) => {
 let sendCourses = async (sender_psid, type, payload) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const { categoryID, subCategoryID } = payload;
+      const { subCategoryID } = payload;
       let coursesString;
 
       console.log({ type, payload });
 
       if (type === 4) {
-        if (categoryID !== undefined && subCategoryID !== undefined) {
+        if (subCategoryID !== undefined) {
           coursesString = await requestPromise.get({
-            url: `${process.env.BACK_END_URL}course?type=${type}&category=${categoryID}&subCategory=${subCategoryID}&limit=10&page=1`,
+            url: `${process.env.BACK_END_URL}course?type=${type}&subCategory=${subCategoryID}&limit=10&page=1`,
           });
         }
       } else {
