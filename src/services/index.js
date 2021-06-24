@@ -290,7 +290,7 @@ let sendCourses = async (sender_psid, type, payload) => {
       if (type === 4) {
         if (subCategoryID !== undefined) {
           coursesString = await requestPromise.get({
-            url: `${process.env.BACK_END_URL}courses?type=${type}&subCategory=${subCategoryID}&limit=10&page=1`,
+            url: `${process.env.BACK_END_URL}courses?type=${type}&subCategory=${subCategoryID}&limit=4&page=1`,
           });
         }
       } else {
