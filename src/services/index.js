@@ -344,7 +344,7 @@ let sendCourses = async (sender_psid, type, payload) => {
           type: 'template',
           payload: {
             template_type: 'generic',
-            elements: coursesTemplate,
+            elements: [],
           },
         },
       };
