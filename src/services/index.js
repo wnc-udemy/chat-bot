@@ -88,18 +88,65 @@ let sendResponseWelcomeNewCustomer = (username, sender_psid) => {
   });
 };
 
-let sendCategory = async (sender_psid) => {
+let sendMainMenu = (sender_psid) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let response_second = {
+        attachment: {
+          type: 'template',
+          payload: {
+            template_type: 'generic',
+            elements: [
+              {
+                title: 'Want to learn something awesome?',
+                image_url: 'https://i.imgur.com/MJ6A3Lb.jpg',
+                subtitle: 'Watch more courses on our website ^^',
+                buttons: [
+                  {
+                    type: 'postback',
+                    title: 'SHOW CATEGORY',
+                    payload: 'SHOW_CATEGORY',
+                  },
+                  {
+                    type: 'postback',
+                    title: 'SHOW COURSE',
+                    payload: 'SHOW_COURSE',
+                  },
+                  {
+                    type: 'postback',
+                    title: 'GUIDE TO USE THIS BOT',
+                    payload: 'GUIDE_BOT',
+                  },
+                ],
+              },
+            ],
+          },
+        },
+      };
+
+      //send a image with button view main menu
+      await sendTypingOn(sender_psid);
+      await sendMessage(sender_psid, response_second);
+
+      resolve('done!');
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
+let sendCategories = async (sender_psid) => {
   const categoriesString = await requestPromise.get({
     url: `${process.env.BACK_END_URL}categories?type=1&limit=10&page=1`,
   });
 
   const categoriesObj = JSON.parse(categoriesString);
 
-  const coursesTemplate = categoriesObj.map((e) => {
+  const categoriesTemplate = categoriesObj.map((e) => {
     const item = {
       content_type: 'text',
       title: e.name,
-      payload: 'SMALL',
+      payload: `CATEGORY_ID_${e._id}`,
     };
 
     return item;
@@ -112,7 +159,7 @@ let sendCategory = async (sender_psid) => {
     messaging_type: 'RESPONSE',
     message: {
       text: 'Which category do you choose?',
-      quick_replies: coursesTemplate,
+      quick_replies: categoriesTemplate,
     },
   };
 
@@ -132,6 +179,68 @@ let sendCategory = async (sender_psid) => {
       }
     }
   );
+};
+
+let sendSubCategories = async (sender_psid, categoryID) => {
+  const categoriesString = await requestPromise.get({
+    url: `${process.env.BACK_END_URL}categories?type=1&limit=10&page=1`,
+  });
+
+  const categoriesObj = JSON.parse(categoriesString);
+
+  const idxCategory = categoriesObj.findIndex(e._id === categoryID);
+
+  if (idxCategory === -1) {
+    return sendCategory(sender_psid);
+  }
+
+  const subCategoriesTemplate = categoriesObj[idxCategory].subCategories.map(
+    (e) => {
+      const item = {
+        content_type: 'text',
+        title: e.name,
+        payload: `SUB_CATEGORY_ID_${e._id}`,
+      };
+
+      return item;
+    }
+  );
+
+  let request_body = {
+    recipient: {
+      id: sender_psid,
+    },
+    messaging_type: 'RESPONSE',
+    message: {
+      text: 'Which category do you choose?',
+      quick_replies: subCategoriesTemplate,
+    },
+  };
+
+  // Send the HTTP request to the Messenger Platform
+  request(
+    {
+      uri: 'https://graph.facebook.com/v6.0/me/messages',
+      qs: { access_token: process.env.FB_PAGE_TOKEN },
+      method: 'POST',
+      json: request_body,
+    },
+    (err, res, body) => {
+      if (!err) {
+        console.log('message sent!');
+      } else {
+        console.error('Unable to send message:' + err);
+      }
+    }
+  );
+};
+
+let sendCoursesFollowSubCategory = async (
+  sender_psid,
+  categoryID,
+  subCategoryID
+) => {
+  return sendCourse(sender_psid, 4, { categoryID, subCategoryID });
 };
 
 let sendCourseMenu = async (sender_psid) => {
@@ -156,11 +265,6 @@ let sendCourseMenu = async (sender_psid) => {
               },
               {
                 type: 'postback',
-                title: 'LASTED COURSES',
-                payload: 'LASTED_COURSES',
-              },
-              {
-                type: 'postback',
                 title: 'HIGHLIGHT COURSES',
                 payload: 'HIGHLIGHT_COURSES',
               },
@@ -178,12 +282,23 @@ let sendCourseMenu = async (sender_psid) => {
   });
 };
 
-let sendCourse = async (sender_psid, type) => {
+let sendCourses = async (sender_psid, type, payload) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const coursesString = await requestPromise.get({
-        url: `${process.env.BACK_END_URL}course?type=${type}&limit=10&page=1`,
-      });
+      const { categoryID, subCategoryID } = payload;
+      let coursesString;
+
+      console.log({ type, payload });
+
+      if (type === 4) {
+        if (categoryID !== undefined && subCategoryID !== undefined) {
+          coursesString = await requestPromise.get({
+            url: `${process.env.BACK_END_URL}course?type=${type}&category=${categoryID}&subCategory=${subCategoryID}&limit=10&page=1`,
+          });
+        }
+      } else {
+        sendMainMenu(sender_psid);
+      }
 
       const coursesObj = JSON.parse(coursesString);
 
@@ -191,12 +306,12 @@ let sendCourse = async (sender_psid, type) => {
         const item = {
           title: e.name,
           image_url: e.urlThumb,
-          subtitle: e.introDescription,
+          text: `fee ${e.fee}`,
           buttons: [
             {
-              type: 'web_url',
-              url: `${process.env.FRONT_END_URL}detail-course/${e.id}`,
-              title: 'Watch now',
+              type: 'postback',
+              title: 'SHOW DETAIL',
+              payload: `SHOW_DETAIL_${e._id}`,
             },
           ],
         };
@@ -206,7 +321,7 @@ let sendCourse = async (sender_psid, type) => {
 
       const goBackItem = {
         title: 'Go back',
-        image_url: ' https://bit.ly/imageToSend',
+        image_url: 'https://i.imgur.com/MJ6A3Lb.jpg',
         buttons: [
           {
             type: 'postback',
@@ -215,8 +330,71 @@ let sendCourse = async (sender_psid, type) => {
           },
           {
             type: 'postback',
-            title: 'RESERVE A TABLE',
-            payload: 'RESERVE_TABLE',
+            title: 'FINISH',
+            payload: 'SHOW_FINISH',
+          },
+        ],
+      };
+
+      coursesTemplate.push(goBackItem);
+
+      let response = {
+        attachment: {
+          type: 'template',
+          payload: {
+            template_type: 'generic',
+            elements: coursesTemplate,
+          },
+        },
+      };
+      await sendTypingOn(sender_psid);
+      await sendMessage(sender_psid, response);
+      resolve('done');
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
+let sendDetailCourse = async (sender_psid, courseID) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      console.log({ courseID });
+
+      const courseString = await requestPromise.get({
+        url: `${process.env.BACK_END_URL}course/${courseID}`,
+      });
+
+      const courseObj = JSON.parse(courseString);
+
+      const coursesTemplate = [
+        {
+          title: courseObj.name,
+          image_url: courseObj.urlThumb,
+          subtitle: courseObj.introDescription,
+          buttons: [
+            {
+              type: 'web_url',
+              url: `${process.env.FRONT_END_URL}detail-course/${courseObj._id}`,
+              title: 'Watch now',
+            },
+          ],
+        },
+      ];
+
+      const goBackItem = {
+        title: 'Go back',
+        image_url: 'https://i.imgur.com/MJ6A3Lb.jpg',
+        buttons: [
+          {
+            type: 'postback',
+            title: 'BACK TO MAIN MENU',
+            payload: 'BACK_TO_MAIN_MENU',
+          },
+          {
+            type: 'postback',
+            title: 'FINISH',
+            payload: 'SHOW_FINISH',
           },
         ],
       };
@@ -666,7 +844,7 @@ let sendMessageDoneReserveTable = async (sender_id) => {
       attachment: {
         type: 'image',
         payload: {
-          url: 'https://bit.ly/giftDonalTrump',
+          url: 'https://i.imgur.com/MJ6A3Lb.jpg',
         },
       },
     };
@@ -682,7 +860,7 @@ let sendMessageDoneReserveTable = async (sender_id) => {
         type: 'template',
         payload: {
           template_type: 'button',
-          text: `Done! \nOur reservation team will contact you as soon as possible ${username}.\n \nWould you like to check our Main Menu?`,
+          text: `Done! \nOur team will contact you as soon as possible ${username}.\n \nWould you like to check our Main Menu?`,
           buttons: [
             {
               type: 'postback',
@@ -805,141 +983,6 @@ let showRoomDetail = (sender_psid) => {
   });
 };
 
-let sendSalad = (sender_psid) => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      let response1 = {
-        attachment: {
-          type: 'image',
-          payload: {
-            url: URL_SALAD_GIF,
-          },
-        },
-      };
-      let response2 = {
-        attachment: {
-          type: 'template',
-          payload: {
-            template_type: 'button',
-            text: `Entree Salad \n$25.00`,
-            buttons: [
-              {
-                type: 'postback',
-                title: 'SHOW MAIN MENU',
-                payload: 'MAIN_MENU',
-              },
-              {
-                type: 'postback',
-                title: 'RESERVE A TABLE',
-                payload: 'RESERVE_TABLE',
-              },
-            ],
-          },
-        },
-      };
-
-      await sendTypingOn(sender_psid);
-      await sendMessage(sender_psid, response1);
-      await sendTypingOn(sender_psid);
-      await sendMessage(sender_psid, response2);
-
-      resolve('done');
-    } catch (e) {
-      reject(e);
-    }
-  });
-};
-
-let sendFish = (sender_psid) => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      let response1 = {
-        attachment: {
-          type: 'image',
-          payload: {
-            url: URL_SHOW_FISH,
-          },
-        },
-      };
-      let response2 = {
-        attachment: {
-          type: 'template',
-          payload: {
-            template_type: 'button',
-            text: `Fish fry \n$60.00`,
-            buttons: [
-              {
-                type: 'postback',
-                title: 'SHOW MAIN MENU',
-                payload: 'MAIN_MENU',
-              },
-              {
-                type: 'postback',
-                title: 'RESERVE A TABLE',
-                payload: 'RESERVE_TABLE',
-              },
-            ],
-          },
-        },
-      };
-
-      await sendTypingOn(sender_psid);
-      await sendMessage(sender_psid, response1);
-      await sendTypingOn(sender_psid);
-      await sendMessage(sender_psid, response2);
-
-      resolve('done');
-    } catch (e) {
-      reject(e);
-    }
-  });
-};
-
-let sendClassic = (sender_psid) => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      let response1 = {
-        attachment: {
-          type: 'image',
-          payload: {
-            url: URL_SHOW_CLASSIC,
-          },
-        },
-      };
-      let response2 = {
-        attachment: {
-          type: 'template',
-          payload: {
-            template_type: 'button',
-            text: `Perfect oven baked fries \n$30.00`,
-            buttons: [
-              {
-                type: 'postback',
-                title: 'SHOW MAIN MENU',
-                payload: 'MAIN_MENU',
-              },
-              {
-                type: 'postback',
-                title: 'RESERVE A TABLE',
-                payload: 'RESERVE_TABLE',
-              },
-            ],
-          },
-        },
-      };
-
-      await sendTypingOn(sender_psid);
-      await sendMessage(sender_psid, response1);
-      await sendTypingOn(sender_psid);
-      await sendMessage(sender_psid, response2);
-
-      resolve('done');
-    } catch (e) {
-      reject(e);
-    }
-  });
-};
-
 let sendMessage = (sender_psid, response) => {
   return new Promise((resolve, reject) => {
     try {
@@ -1042,8 +1085,13 @@ let markMessageSeen = (sender_psid) => {
 module.exports = {
   getFacebookUsername,
   sendResponseWelcomeNewCustomer,
-  sendCategory,
+  sendMainMenu,
+  sendCategories,
+  sendSubCategories,
+  sendCoursesFollowSubCategory,
   sendCourseMenu,
+  sendCourses,
+  sendDetailCourse,
   sendDinnerMenu,
   sendPubMenu,
   sendAppetizer,
@@ -1056,9 +1104,6 @@ module.exports = {
   sendMessageDoneReserveTable,
   sendMessageDefaultForTheBot,
   showRoomDetail,
-  sendSalad,
-  sendFish,
-  sendClassic,
   markMessageSeen,
   sendTypingOn,
   sendMessage,
