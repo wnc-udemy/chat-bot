@@ -76,8 +76,6 @@ let handleMessage = async (sender_psid, message) => {
     if (message.quick_reply.payload.includes('SUB_CATEGORY_ID')) {
       const subCategoryID = message.quick_reply.payload.substring(16);
 
-      console.log({ subCategoryID });
-
       await chatBotService.markMessageSeen(sender_psid);
       await chatBotService.sendTypingOn(sender_psid);
       await chatBotService.sendCoursesFollowSubCategory(
