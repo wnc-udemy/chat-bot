@@ -113,13 +113,17 @@ let handleMessage = async (sender_psid, message) => {
     let username = await chatBotService.getFacebookUsername(sender_psid);
     user.name = username;
     await chatBotService.sendResponseWelcomeNewCustomer(username, sender_psid);
+    return;
   } else if (entity.name === 'wit$thanks') {
     await chatBotService.sendMainMenu(sender_psid);
+    return;
   } else if (entity.name === 'wit$bye') {
     await chatBotService.sendMessageGoodBye(sender_psid);
+    return;
   } else {
     //default reply
     await chatBotService.sendMessageDefaultForTheBot(sender_psid);
+    return;
   }
 
   //handle attachment message
