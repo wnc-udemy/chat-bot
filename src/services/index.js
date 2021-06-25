@@ -30,7 +30,7 @@ let sendResponseWelcomeNewCustomer = (username, sender_psid) => {
   return new Promise(async (resolve, reject) => {
     try {
       let response_first = {
-        text: `Welcome ${username} to Farmdemy's web app`,
+        text: `Welcome ${username} to Farmdemy's web app \n Typing text to search course follow name 😉`,
       };
       let response_second = {
         attachment: {
@@ -543,7 +543,7 @@ let sendMessageDefaultForTheBot = (sender_psid) => {
   return new Promise(async (resolve, reject) => {
     try {
       let response1 = {
-        text: "Sorry, I'm just a bot, man ^^ \nYou can test me with all these buttons or try to 😉",
+        text: "Sorry, I'm just a bot, man ^^ \nYou can test me with all these buttons or try to \n Typing text to search course follow name 😉",
       };
       //send a media template
       let response2 = {
