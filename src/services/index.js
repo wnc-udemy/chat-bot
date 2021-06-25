@@ -130,6 +130,9 @@ let sendMainMenu = (sender_psid) => {
 };
 
 let sendCategories = async (sender_psid) => {
+  await markMessageSeen(sender_psid);
+  await sendTypingOn(sender_psid);
+
   const categoriesString = await requestPromise.get({
     url: `${process.env.BACK_END_URL}categories?type=1&limit=10&page=1`,
   });
@@ -157,9 +160,6 @@ let sendCategories = async (sender_psid) => {
     },
   };
 
-  await markMessageSeen(sender_psid);
-  await sendTypingOn(sender_psid);
-
   // Send the HTTP request to the Messenger Platform
   request(
     {
@@ -179,6 +179,9 @@ let sendCategories = async (sender_psid) => {
 };
 
 let sendSubCategories = async (sender_psid, categoryID) => {
+  await markMessageSeen(sender_psid);
+  await sendTypingOn(sender_psid);
+
   const categoriesString = await requestPromise.get({
     url: `${process.env.BACK_END_URL}categories?type=1&limit=10&page=1`,
   });
@@ -213,9 +216,6 @@ let sendSubCategories = async (sender_psid, categoryID) => {
       quick_replies: subCategoriesTemplate,
     },
   };
-
-  await markMessageSeen(sender_psid);
-  await sendTypingOn(sender_psid);
 
   // Send the HTTP request to the Messenger Platform
   request(
