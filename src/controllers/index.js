@@ -210,6 +210,9 @@ let handlePostback = async (sender_psid, received_postback) => {
     case 'MOST_VIEW_COURSES':
       await chatBotService.sendCourses(sender_psid, 1, {});
       break;
+    case 'LATEST_COURSES':
+      await chatBotService.sendCourses(sender_psid, 2, {});
+      break;
     case 'HIGHLIGHT_COURSES':
       await chatBotService.sendCourses(sender_psid, 3, {});
       break;

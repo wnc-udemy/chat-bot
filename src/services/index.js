@@ -3,14 +3,6 @@ import requestPromise from 'request-promise';
 
 require('dotenv').config();
 
-const URL_SHOW_ROOM_GIF =
-  'https://media3.giphy.com/media/TGcD6N8uzJ9FXuDV3a/giphy.gif?cid=ecf05e47afe5be971d1fe6c017ada8e15c29a76fc524ac20&rid=giphy.gif';
-const URL_SALAD_GIF =
-  'https://media0.giphy.com/media/9Vk8qP9EmWB8FePccb/giphy.gif?cid=ecf05e478d0c93d69e72264c8ebbf58a9a1d7ae294754131&rid=giphy.gif';
-const URL_SHOW_FISH =
-  'https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_508,h_320,c_fill/ztjeouq2jlas5b2zxksm';
-const URL_SHOW_CLASSIC =
-  'https://ardo.com/files/attachments/.10202/w1440h700q85_AZ1.jpg';
 let getFacebookUsername = (sender_psid) => {
   return new Promise((resolve, reject) => {
     // Send the HTTP request to the Messenger Platform
@@ -53,18 +45,18 @@ let sendResponseWelcomeNewCustomer = (username, sender_psid) => {
                 buttons: [
                   {
                     type: 'postback',
-                    title: 'SHOW CATEGORY',
+                    title: 'Show categories',
                     payload: 'SHOW_CATEGORY',
                   },
                   {
                     type: 'postback',
-                    title: 'SHOW COURSE',
+                    title: 'Show courses',
                     payload: 'SHOW_COURSE',
                   },
                   {
                     type: 'postback',
-                    title: 'GUIDE TO USE THIS BOT',
-                    payload: 'GUIDE_BOT',
+                    title: 'Search name of course',
+                    payload: 'SEARCH_COURSES',
                   },
                 ],
               },
@@ -250,17 +242,17 @@ let sendCourseMenu = async (sender_psid) => {
             buttons: [
               {
                 type: 'postback',
-                title: 'SEARCH COURSE',
-                payload: 'SEARCH_COURSE',
+                title: 'Latest courses',
+                payload: 'LATEST_COURSES',
               },
               {
                 type: 'postback',
-                title: 'MOST VIEW COURSES',
+                title: 'Most view courses',
                 payload: 'MOST_VIEW_COURSES',
               },
               {
                 type: 'postback',
-                title: 'HIGHLIGHT COURSES',
+                title: 'Highlight course',
                 payload: 'HIGHLIGHT_COURSES',
               },
             ],
@@ -284,7 +276,7 @@ let getTypingNameCourses = (sender_id) => {
     },
     messaging_type: 'RESPONSE',
     message: {
-      text: 'Enter the name of the course you are looking for?',
+      text: 'Enter the name of course you are looking for?',
       quick_replies: [
         {
           content_type: 'user_phone_number',
@@ -357,7 +349,7 @@ let sendCourses = async (sender_psid, type, payload) => {
           buttons: [
             {
               type: 'postback',
-              title: 'SHOW DETAIL',
+              title: 'Show detail',
               payload: `SHOW_DETAIL_${e._id}`,
             },
           ],
@@ -372,12 +364,12 @@ let sendCourses = async (sender_psid, type, payload) => {
         buttons: [
           {
             type: 'postback',
-            title: 'BACK TO MAIN MENU',
+            title: 'Back to main menu',
             payload: 'BACK_TO_MAIN_MENU',
           },
           {
             type: 'postback',
-            title: 'FINISH',
+            title: 'Finish',
             payload: 'SHOW_FINISH',
           },
         ],
@@ -434,12 +426,12 @@ let sendDetailCourse = async (sender_psid, courseID) => {
         buttons: [
           {
             type: 'postback',
-            title: 'BACK TO MAIN MENU',
+            title: 'Back to main menu',
             payload: 'BACK_TO_MAIN_MENU',
           },
           {
             type: 'postback',
-            title: 'FINISH',
+            title: 'Finish',
             payload: 'SHOW_FINISH',
           },
         ],
