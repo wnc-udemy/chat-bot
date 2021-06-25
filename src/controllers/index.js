@@ -24,11 +24,11 @@ let postWebhook = (req, res) => {
     body.entry.forEach(function (entry) {
       // Gets the body of the webhook event
       let webhook_event = entry.messaging[0];
-      console.log(webhook_event);
+      // console.log(webhook_event);
 
       // Get the sender PSID
       let sender_psid = webhook_event.sender.id;
-      console.log('Sender PSID: ' + sender_psid);
+      // console.log('Sender PSID: ' + sender_psid);
 
       // Check if the event is a message or postback and
       // pass the event to the appropriate handler function
@@ -60,7 +60,7 @@ let getWebhook = (req, res) => {
     // Checks the mode and token sent is correct
     if (mode === 'subscribe' && token === VERIFY_TOKEN) {
       // Responds with the challenge token from the request
-      console.log('WEBHOOK_VERIFIED');
+      // console.log('WEBHOOK_VERIFIED');
       res.status(200).send(challenge);
     } else {
       // Responds with '403 Forbidden' if verify tokens do not match
@@ -94,7 +94,7 @@ let handleMessage = async (sender_psid, message) => {
     if (message.quick_reply.payload !== '') {
       const name = message.quick_reply.payload;
 
-      console.log({ name });
+      // console.log({ name });
 
       await chatBotService.markMessageSeen(sender_psid);
       await chatBotService.sendTypingOn(sender_psid);
@@ -259,7 +259,7 @@ function callSendAPI(sender_psid, response) {
     },
     (err, res, body) => {
       if (!err) {
-        console.log('message sent!');
+        // console.log('message sent!');
       } else {
         console.error('Unable to send message:' + err);
       }

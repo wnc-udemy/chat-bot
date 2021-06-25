@@ -168,7 +168,7 @@ let sendCategories = async (sender_psid) => {
     },
     (err, res, body) => {
       if (!err) {
-        console.log('message sent!');
+        // console.log('message sent!');
       } else {
         console.error('Unable to send message:' + err);
       }
@@ -222,7 +222,7 @@ let sendSubCategories = async (sender_psid, categoryID) => {
     },
     (err, res, body) => {
       if (!err) {
-        console.log('message sent!');
+        // console.log('message sent!');
       } else {
         console.error('Unable to send message:' + err);
       }
@@ -300,7 +300,7 @@ let getTypingNameCourses = async (sender_id) => {
       if (!err) {
         // console.log('message sent!');
       } else {
-        // console.error('Unable to send message:' + err);
+        console.error('Unable to send message:' + err);
       }
     }
   );
