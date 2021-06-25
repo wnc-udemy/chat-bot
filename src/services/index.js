@@ -96,12 +96,12 @@ let sendMainMenu = (sender_psid) => {
                 buttons: [
                   {
                     type: 'postback',
-                    title: 'SHOW CATEGORY',
+                    title: 'Show categories',
                     payload: 'SHOW_CATEGORY',
                   },
                   {
                     type: 'postback',
-                    title: 'SHOW COURSE',
+                    title: 'Show courses',
                     payload: 'SHOW_COURSE',
                   },
                   {
@@ -371,6 +371,7 @@ let sendCourses = async (sender_psid, type, payload) => {
 
       const goBackItem = {
         title: 'Go back',
+        image_url: 'https://i.imgur.com/MJ6A3Lb.jpg',
         buttons: [
           {
             type: 'postback',
@@ -432,6 +433,7 @@ let sendDetailCourse = async (sender_psid, courseID) => {
 
       const goBackItem = {
         title: 'Go back',
+        image_url: 'https://i.imgur.com/MJ6A3Lb.jpg',
         buttons: [
           {
             type: 'postback',
@@ -519,7 +521,7 @@ let sendMessageDefaultForTheBot = (sender_psid) => {
   return new Promise(async (resolve, reject) => {
     try {
       let response1 = {
-        text: "Sorry, I'm just a bot, man ^^ \nYou can test me with all these buttons or try to\n\nThis video may help you to understand me 😉",
+        text: "Sorry, I'm just a bot, man ^^ \nYou can test me with all these buttons or try to 😉",
       };
       //send a media template
       let response2 = {
@@ -535,12 +537,12 @@ let sendMessageDefaultForTheBot = (sender_psid) => {
                 buttons: [
                   {
                     type: 'postback',
-                    title: 'SHOW CATEGORY',
+                    title: 'Show categories',
                     payload: 'SHOW_CATEGORY',
                   },
                   {
                     type: 'postback',
-                    title: 'SHOW COURSE',
+                    title: 'Show courses',
                     payload: 'SHOW_COURSE',
                   },
                   {

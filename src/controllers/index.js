@@ -106,6 +106,8 @@ let handleMessage = async (sender_psid, message) => {
   //handle text message
   let entity = handleMessageWithEntities(message);
 
+  console.log({ entity });
+
   await chatBotService.sendTypingOn(sender_psid);
   await chatBotService.markMessageSeen(sender_psid);
 
@@ -121,8 +123,9 @@ let handleMessage = async (sender_psid, message) => {
     await chatBotService.sendMessageGoodBye(sender_psid);
     return;
   } else {
-    //default reply
-    await chatBotService.sendMessageDefaultForTheBot(sender_psid);
+    await chatBotService.markMessageSeen(sender_psid);
+    await chatBotService.sendTypingOn(sender_psid);
+    await chatBotService.sendCourses(sender_psid, 4, { name: message });
     return;
   }
 
@@ -199,7 +202,7 @@ let handlePostback = async (sender_psid, received_postback) => {
       await chatBotService.sendMainMenu(sender_psid);
       break;
     case 'SHOW_FINISH':
-      await chatBotService.sendMessageDoneReserveTable(sender_psid);
+      await chatBotService.sendMessageGoodBye(sender_psid);
       break;
     case 'BACK_TO_MAIN_MENU':
       await chatBotService.goBackToMainMenu(sender_psid);
