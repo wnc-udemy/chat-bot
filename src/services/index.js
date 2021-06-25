@@ -270,6 +270,9 @@ let sendCourseMenu = async (sender_psid) => {
 };
 
 let getTypingNameCourses = async (sender_id) => {
+  await markMessageSeen(sender_id);
+  await sendTypingOn(sender_id);
+
   let request_body = {
     recipient: {
       id: sender_id,
@@ -284,8 +287,6 @@ let getTypingNameCourses = async (sender_id) => {
       ],
     },
   };
-
-  await sendTypingOn(sender_psid);
 
   // Send the HTTP request to the Messenger Platform
   request(
