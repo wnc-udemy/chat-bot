@@ -95,7 +95,30 @@ let handleMessage = async (sender_psid, message) => {
 
   if (message && message.text) {
     const name = message.text;
-    await chatBotService.sendCourses(sender_psid, 4, { name });
+
+    if (name === 'hi' || name === 'hello') {
+      let username = await chatBotService.getFacebookUsername(sender_psid);
+      user.name = username;
+      await chatBotService.sendResponseWelcomeNewCustomer(
+        username,
+        sender_psid
+      );
+      return;
+    }
+    if (name === 'thanks' || name === 'thank' || name === 'thank you') {
+      await chatBotService.sendMainMenu(sender_psid);
+      return;
+    } else if (name === 'bye' || name === 'goodbye') {
+      await chatBotService.sendMessageGoodBye(sender_psid);
+      return;
+    } else if (name === 'cc' || name === 'loz' || name == 'oc') {
+      response = { text: 'Cút!!' };
+      callSendAPI(sender_psid, response);
+      return;
+    } else {
+      await chatBotService.sendCourses(sender_psid, 4, { name });
+      return;
+    }
   }
 
   // //handle text message
