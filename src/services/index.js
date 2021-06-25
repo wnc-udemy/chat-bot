@@ -308,33 +308,46 @@ let sendCourses = async (sender_psid, type, payload) => {
     try {
       const { subCategoryID, name } = payload;
       let coursesString;
+      let coursesObj;
 
       if (type === 4) {
         if (subCategoryID !== undefined && name !== '' && name !== undefined) {
           coursesString = await requestPromise.get({
             url: `${process.env.BACK_END_URL}courses?type=${type}&subCategory=${subCategoryID}&name=${name}&limit=3&page=1`,
           });
+
+          coursesObj = JSON.parse(coursesString).courses;
         } else if (subCategoryID !== undefined) {
           coursesString = await requestPromise.get({
             url: `${process.env.BACK_END_URL}courses?type=${type}&subCategory=${subCategoryID}&limit=3&page=1`,
           });
+
+          coursesObj = JSON.parse(coursesString).courses;
         } else if (name !== '' && name !== undefined) {
           coursesString = await requestPromise.get({
             url: `${process.env.BACK_END_URL}courses?type=${type}&name=${name}&limit=3&page=1`,
           });
+
+          coursesObj = JSON.parse(coursesString).courses;
         }
       } else if (type === 1) {
         coursesString = await requestPromise.get({
           url: `${process.env.BACK_END_URL}courses?type=${type}&limit=3&page=1`,
         });
+
+        coursesObj = JSON.parse(coursesString);
       } else if (type === 2) {
         coursesString = await requestPromise.get({
           url: `${process.env.BACK_END_URL}courses?type=${type}&limit=3&page=1`,
         });
+
+        coursesObj = JSON.parse(coursesString);
       } else if (type === 3) {
         coursesString = await requestPromise.get({
           url: `${process.env.BACK_END_URL}courses?type=${type}&limit=3&page=1`,
         });
+
+        coursesObj = JSON.parse(coursesString);
       } else {
         return sendMainMenu(sender_psid);
       }
@@ -343,7 +356,7 @@ let sendCourses = async (sender_psid, type, payload) => {
 
       const coursesTemplate = coursesObj.map((e) => {
         const item = {
-          title: e.name,
+          title: `${e.name} - Fee: ${e.fee} $`,
           image_url: e.urlThumb,
           // text: `fee ${e.fee}`,
           buttons: [
@@ -406,7 +419,7 @@ let sendDetailCourse = async (sender_psid, courseID) => {
 
       const coursesTemplate = [
         {
-          title: courseObj.name,
+          title: `${courseObj.name} - Fee: ${courseObj.fee} $`,
           image_url: courseObj.url,
           subtitle: courseObj.introDescription,
           // text: `fee ${courseObj.fee}`,
@@ -451,67 +464,6 @@ let sendDetailCourse = async (sender_psid, courseID) => {
       await sendTypingOn(sender_psid);
       await sendMessage(sender_psid, response);
       resolve('done');
-    } catch (e) {
-      reject(e);
-    }
-  });
-};
-
-let sendAppetizer = (sender_psid) => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      let response = {
-        attachment: {
-          type: 'template',
-          payload: {
-            template_type: 'generic',
-            elements: [
-              {
-                title: 'Little Neck Clams on the Half Shell',
-                subtitle: 'Dozen - $20.00',
-                image_url: 'https://bit.ly/appetizers1',
-              },
-
-              {
-                title: 'Fresh Oysters',
-                subtitle: '1/2 Dozen - $21.00 | Dozen - $40.00',
-                image_url: 'https://bit.ly/appetizers2',
-              },
-
-              {
-                title: 'Lobster Salad',
-                subtitle: 'Half Lobster with Avocado and Grapefruit',
-                image_url: 'https://bit.ly/appetizers3',
-              },
-
-              {
-                title: 'Go back',
-                image_url: ' https://bit.ly/imageToSend',
-                buttons: [
-                  {
-                    type: 'postback',
-                    title: 'SHOW LUNCH MENU',
-                    payload: 'BACK_TO_LUNCH_MENU',
-                  },
-                  {
-                    type: 'postback',
-                    title: 'BACK TO MAIN MENU',
-                    payload: 'BACK_TO_MAIN_MENU',
-                  },
-                  {
-                    type: 'postback',
-                    title: 'RESERVE A TABLE',
-                    payload: 'RESERVE_TABLE',
-                  },
-                ],
-              },
-            ],
-          },
-        },
-      };
-
-      await sendTypingOn(sender_psid);
-      await sendMessage(sender_psid, response);
     } catch (e) {
       reject(e);
     }
@@ -726,7 +678,6 @@ module.exports = {
   sendCourses,
   sendDetailCourse,
   getTypingNameCourses,
-  sendAppetizer,
   goBackToMainMenu,
   sendMessageGoodBye,
   sendMessageDefaultForTheBot,
