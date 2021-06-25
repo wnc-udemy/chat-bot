@@ -543,7 +543,6 @@ let sendMessageGoodBye = async (sender_id) => {
       },
     };
 
-    await markMessageSeen(sender_id);
     await sendTypingOn(sender_id);
     await sendMessage(sender_id, response2);
   } catch (e) {
