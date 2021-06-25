@@ -103,30 +103,12 @@ let handleMessage = async (sender_psid, message) => {
     return;
   }
 
-  //handle text message
-  let entity = handleMessageWithEntities(message);
-
-  console.log({ entity });
-
-  await chatBotService.sendTypingOn(sender_psid);
-  await chatBotService.markMessageSeen(sender_psid);
-
-  if (entity.name === 'wit$greetings') {
-    let username = await chatBotService.getFacebookUsername(sender_psid);
-    user.name = username;
-    await chatBotService.sendResponseWelcomeNewCustomer(username, sender_psid);
-    return;
-  } else if (entity.name === 'wit$thanks') {
-    await chatBotService.sendMainMenu(sender_psid);
-    return;
-  } else if (entity.name === 'wit$bye') {
-    await chatBotService.sendMessageGoodBye(sender_psid);
-    return;
-  } else {
-    await chatBotService.markMessageSeen(sender_psid);
+  if (message && message.text) {
+    const name = message.text;
     await chatBotService.sendTypingOn(sender_psid);
-    await chatBotService.sendCourses(sender_psid, 4, { name: message });
-    return;
+    await chatBotService.markMessageSeen(sender_psid);
+
+    await chatBotService.sendCourses(sender_psid, 4, { name });
   }
 
   //handle attachment message

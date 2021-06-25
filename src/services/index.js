@@ -309,6 +309,7 @@ let sendCourses = async (sender_psid, type, payload) => {
       const { subCategoryID, name } = payload;
       let coursesString;
       let coursesObj;
+      let coursesTemplate;
 
       if (type === 4) {
         if (subCategoryID !== undefined && name !== '' && name !== undefined) {
@@ -352,41 +353,62 @@ let sendCourses = async (sender_psid, type, payload) => {
         return sendMainMenu(sender_psid);
       }
 
-      const coursesTemplate = coursesObj.map((e) => {
-        const item = {
-          title: `${e.name} - Fee: ${e.fee} $`,
-          image_url: e.urlThumb,
-          // text: `fee ${e.fee}`,
+      if (coursesObj.length === 0) {
+        coursesTemplate = [
+          {
+            title: 'No data, go back',
+            image_url: 'https://i.imgur.com/MJ6A3Lb.jpg',
+            buttons: [
+              {
+                type: 'postback',
+                title: 'Back to main menu',
+                payload: 'BACK_TO_MAIN_MENU',
+              },
+              {
+                type: 'postback',
+                title: 'Finish',
+                payload: 'SHOW_FINISH',
+              },
+            ],
+          },
+        ];
+      } else {
+        coursesTemplate = coursesObj.map((e) => {
+          const item = {
+            title: `${e.name} - Fee: ${e.fee} $`,
+            image_url: e.urlThumb,
+            // text: `fee ${e.fee}`,
+            buttons: [
+              {
+                type: 'postback',
+                title: 'Show detail',
+                payload: `SHOW_DETAIL_${e._id}`,
+              },
+            ],
+          };
+
+          return item;
+        });
+
+        const goBackItem = {
+          title: 'Go back',
+          image_url: 'https://i.imgur.com/MJ6A3Lb.jpg',
           buttons: [
             {
               type: 'postback',
-              title: 'Show detail',
-              payload: `SHOW_DETAIL_${e._id}`,
+              title: 'Back to main menu',
+              payload: 'BACK_TO_MAIN_MENU',
+            },
+            {
+              type: 'postback',
+              title: 'Finish',
+              payload: 'SHOW_FINISH',
             },
           ],
         };
 
-        return item;
-      });
-
-      const goBackItem = {
-        title: 'Go back',
-        image_url: 'https://i.imgur.com/MJ6A3Lb.jpg',
-        buttons: [
-          {
-            type: 'postback',
-            title: 'Back to main menu',
-            payload: 'BACK_TO_MAIN_MENU',
-          },
-          {
-            type: 'postback',
-            title: 'Finish',
-            payload: 'SHOW_FINISH',
-          },
-        ],
-      };
-
-      coursesTemplate.push(goBackItem);
+        coursesTemplate.push(goBackItem);
+      }
 
       let response = {
         attachment: {
