@@ -298,9 +298,9 @@ let getTypingNameCourses = async (sender_id) => {
     },
     (err, res, body) => {
       if (!err) {
-        console.log('message sent!');
+        // console.log('message sent!');
       } else {
-        console.error('Unable to send message:' + err);
+        // console.error('Unable to send message:' + err);
       }
     }
   );
@@ -614,8 +614,8 @@ let sendMessage = (sender_psid, response) => {
           // console.log(res);
           // console.log(body);
           if (!err) {
-            console.log('message sent!');
-            resolve('done!');
+            // console.log('message sent!');
+            // resolve('done!');
           } else {
             reject('Unable to send message:' + err);
           }
