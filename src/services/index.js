@@ -260,11 +260,6 @@ let sendCourseMenu = async (sender_psid) => {
               },
               {
                 type: 'postback',
-                title: 'LATEST COURSES',
-                payload: 'LATEST_COURSES',
-              },
-              {
-                type: 'postback',
                 title: 'HIGHLIGHT COURSES',
                 payload: 'HIGHLIGHT_COURSES',
               },
@@ -280,6 +275,40 @@ let sendCourseMenu = async (sender_psid) => {
       reject(e);
     }
   });
+};
+
+let getTypingNameCourses = (sender_id) => {
+  let request_body = {
+    recipient: {
+      id: sender_id,
+    },
+    messaging_type: 'RESPONSE',
+    message: {
+      text: 'Enter the name of the course you are looking for?',
+      quick_replies: [
+        {
+          content_type: 'user_phone_number',
+        },
+      ],
+    },
+  };
+
+  // Send the HTTP request to the Messenger Platform
+  request(
+    {
+      uri: 'https://graph.facebook.com/v11.0/me/messages',
+      qs: { access_token: process.env.FB_PAGE_TOKEN },
+      method: 'POST',
+      json: request_body,
+    },
+    (err, res, body) => {
+      if (!err) {
+        console.log('message sent!');
+      } else {
+        console.error('Unable to send message:' + err);
+      }
+    }
+  );
 };
 
 let sendCourses = async (sender_psid, type, payload) => {
@@ -377,8 +406,6 @@ let sendCourses = async (sender_psid, type, payload) => {
 let sendDetailCourse = async (sender_psid, courseID) => {
   return new Promise(async (resolve, reject) => {
     try {
-      console.log({ courseID });
-
       const courseString = await requestPromise.get({
         url: `${process.env.BACK_END_URL}courses/${courseID}`,
       });
@@ -711,6 +738,7 @@ module.exports = {
   sendCourseMenu,
   sendCourses,
   sendDetailCourse,
+  getTypingNameCourses,
   sendAppetizer,
   goBackToMainMenu,
   sendMessageDoneReserveTable,

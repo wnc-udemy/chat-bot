@@ -92,9 +92,13 @@ let handleMessage = async (sender_psid, message) => {
     }
 
     if (message.quick_reply.payload !== ' ') {
+      const name = message.quick_reply.payload;
+
+      console.log({ name });
+
       await chatBotService.markMessageSeen(sender_psid);
       await chatBotService.sendTypingOn(sender_psid);
-      await chatBotService.sendMessageDoneReserveTable(sender_psid);
+      await chatBotService.sendCourses(sender_psid, 4, { name });
     }
     return;
   }
@@ -212,11 +216,11 @@ let handlePostback = async (sender_psid, received_postback) => {
     case 'BACK_TO_MAIN_MENU':
       await chatBotService.goBackToMainMenu(sender_psid);
       break;
+    case 'SEARCH_COURSES':
+      await chatBotService.getTypingNameCourses(sender_psid);
+      break;
     case 'MOST_VIEW_COURSES':
       await chatBotService.sendCourses(sender_psid, 1, {});
-      break;
-    case 'LATEST_COURSES':
-      await chatBotService.sendCourses(sender_psid, 2, {});
       break;
     case 'HIGHLIGHT_COURSES':
       await chatBotService.sendCourses(sender_psid, 3, {});
