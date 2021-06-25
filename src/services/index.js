@@ -207,7 +207,7 @@ let sendSubCategories = async (sender_psid, categoryID) => {
     },
     messaging_type: 'RESPONSE',
     message: {
-      text: 'Which category do you choose?',
+      text: 'Which sub category do you choose?',
       quick_replies: subCategoriesTemplate,
     },
   };
@@ -351,8 +351,6 @@ let sendCourses = async (sender_psid, type, payload) => {
       } else {
         return sendMainMenu(sender_psid);
       }
-
-      const coursesObj = JSON.parse(coursesString).courses;
 
       const coursesTemplate = coursesObj.map((e) => {
         const item = {
