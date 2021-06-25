@@ -238,10 +238,6 @@ let sendSubCategories = async (sender_psid, categoryID) => {
   );
 };
 
-let sendCoursesFollowSubCategory = async (sender_psid, subCategoryID) => {
-  return sendCourses(sender_psid, 4, { subCategoryID });
-};
-
 let sendCourseMenu = async (sender_psid) => {
   return new Promise(async (resolve, reject) => {
     try {
@@ -255,12 +251,17 @@ let sendCourseMenu = async (sender_psid) => {
               {
                 type: 'postback',
                 title: 'SEARCH COURSE',
-                payload: 'SEARCH COURSE',
+                payload: 'SEARCH_COURSE',
               },
               {
                 type: 'postback',
                 title: 'MOST VIEW COURSES',
                 payload: 'MOST_VIEW_COURSES',
+              },
+              {
+                type: 'postback',
+                title: 'LATEST COURSES',
+                payload: 'LATEST_COURSES',
               },
               {
                 type: 'postback',
@@ -284,15 +285,35 @@ let sendCourseMenu = async (sender_psid) => {
 let sendCourses = async (sender_psid, type, payload) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const { subCategoryID } = payload;
+      const { subCategoryID, name } = payload;
       let coursesString;
 
       if (type === 4) {
-        if (subCategoryID !== undefined) {
+        if (subCategoryID !== undefined && name !== '' && name !== undefined) {
+          coursesString = await requestPromise.get({
+            url: `${process.env.BACK_END_URL}courses?type=${type}&subCategory=${subCategoryID}&name=${name}&limit=3&page=1`,
+          });
+        } else if (subCategoryID !== undefined) {
           coursesString = await requestPromise.get({
             url: `${process.env.BACK_END_URL}courses?type=${type}&subCategory=${subCategoryID}&limit=3&page=1`,
           });
+        } else if (name !== '' && name !== undefined) {
+          coursesString = await requestPromise.get({
+            url: `${process.env.BACK_END_URL}courses?type=${type}&name=${name}&limit=3&page=1`,
+          });
         }
+      } else if (type === 1) {
+        coursesString = await requestPromise.get({
+          url: `${process.env.BACK_END_URL}courses?type=${type}&limit=3&page=1`,
+        });
+      } else if (type === 2) {
+        coursesString = await requestPromise.get({
+          url: `${process.env.BACK_END_URL}courses?type=${type}&limit=3&page=1`,
+        });
+      } else if (type === 3) {
+        coursesString = await requestPromise.get({
+          url: `${process.env.BACK_END_URL}courses?type=${type}&limit=3&page=1`,
+        });
       } else {
         return sendMainMenu(sender_psid);
       }
@@ -687,7 +708,6 @@ module.exports = {
   sendMainMenu,
   sendCategories,
   sendSubCategories,
-  sendCoursesFollowSubCategory,
   sendCourseMenu,
   sendCourses,
   sendDetailCourse,

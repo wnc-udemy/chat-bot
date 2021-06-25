@@ -78,10 +78,7 @@ let handleMessage = async (sender_psid, message) => {
 
       await chatBotService.markMessageSeen(sender_psid);
       await chatBotService.sendTypingOn(sender_psid);
-      await chatBotService.sendCoursesFollowSubCategory(
-        sender_psid,
-        subCategoryID
-      );
+      await chatBotService.sendCourses(sender_psid, 4, { subCategoryID });
       return;
     }
 
@@ -214,6 +211,15 @@ let handlePostback = async (sender_psid, received_postback) => {
       break;
     case 'BACK_TO_MAIN_MENU':
       await chatBotService.goBackToMainMenu(sender_psid);
+      break;
+    case 'MOST_VIEW_COURSES':
+      await chatBotService.sendCourses(sender_psid, 1, {});
+      break;
+    case 'LATEST_COURSES':
+      await chatBotService.sendCourses(sender_psid, 2, {});
+      break;
+    case 'HIGHLIGHT_COURSES':
+      await chatBotService.sendCourses(sender_psid, 3, {});
       break;
 
     case 'yes':
