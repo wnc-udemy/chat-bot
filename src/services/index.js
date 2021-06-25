@@ -106,8 +106,8 @@ let sendMainMenu = (sender_psid) => {
                   },
                   {
                     type: 'postback',
-                    title: 'GUIDE TO USE THIS BOT',
-                    payload: 'GUIDE_BOT',
+                    title: 'Search name of course',
+                    payload: 'SEARCH_COURSES',
                   },
                 ],
               },
@@ -284,6 +284,8 @@ let getTypingNameCourses = (sender_id) => {
       ],
     },
   };
+
+  await sendTypingOn(sender_psid);
 
   // Send the HTTP request to the Messenger Platform
   request(
