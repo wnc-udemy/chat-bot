@@ -111,6 +111,28 @@ let handleMessage = async (sender_psid, message) => {
     await chatBotService.sendCourses(sender_psid, 4, { name });
   }
 
+  //handle text message
+  let entity = handleMessageWithEntities(message);
+
+  await chatBotService.sendTypingOn(sender_psid);
+  await chatBotService.markMessageSeen(sender_psid);
+
+  if (entity.name === 'wit$greetings') {
+    let username = await chatBotService.getFacebookUsername(sender_psid);
+    user.name = username;
+    await chatBotService.sendResponseWelcomeNewCustomer(username, sender_psid);
+    return;
+  } else if (entity.name === 'wit$thanks') {
+    await chatBotService.sendMainMenu(sender_psid);
+    return;
+  } else if (entity.name === 'wit$bye') {
+    await chatBotService.sendMessageGoodBye(sender_psid);
+    return;
+  } else {
+    //default reply
+    await chatBotService.sendMessageDefaultForTheBot(sender_psid);
+  }
+
   //handle attachment message
 };
 

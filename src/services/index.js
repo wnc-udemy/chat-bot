@@ -525,8 +525,8 @@ let sendMessageGoodBye = async (sender_id) => {
             },
             {
               type: 'phone_number',
-              title: '☎ HOT LINE',
-              payload: '+911911',
+              title: '☎ Hot line',
+              payload: '+8434 437 4834',
             },
           ],
         },
