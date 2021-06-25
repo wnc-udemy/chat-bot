@@ -269,7 +269,7 @@ let sendCourseMenu = async (sender_psid) => {
   });
 };
 
-let getTypingNameCourses = (sender_id) => {
+let getTypingNameCourses = async (sender_id) => {
   let request_body = {
     recipient: {
       id: sender_id,
