@@ -30,7 +30,7 @@ let sendResponseWelcomeNewCustomer = (username, sender_psid) => {
   return new Promise(async (resolve, reject) => {
     try {
       let response_first = {
-        text: `Welcome ${username} to Farmdemy's web app \n Typing text to search course follow name 😉`,
+        text: `Welcome ${username} to Farmdemy's web app \n Typing text to search course follow name 😉 \n`,
       };
       let response_second = {
         attachment: {
@@ -70,6 +70,7 @@ let sendResponseWelcomeNewCustomer = (username, sender_psid) => {
       await sendMessage(sender_psid, response_first);
 
       //send a image with button view main menu
+      await markMessageSeen(sender_psid);
       await sendTypingOn(sender_psid);
       await sendMessage(sender_psid, response_second);
 
@@ -505,18 +506,6 @@ let goBackToMainMenu = (sender_psid) => {
 
 let sendMessageGoodBye = async (sender_id) => {
   try {
-    let response = {
-      attachment: {
-        type: 'image',
-        payload: {
-          url: 'https://i.imgur.com/MJ6A3Lb.jpg',
-        },
-      },
-    };
-
-    await sendTypingOn(sender_id);
-    await sendMessage(sender_id, response);
-
     //get facebook username
     let username = await getFacebookUsername(sender_id);
 
@@ -526,7 +515,7 @@ let sendMessageGoodBye = async (sender_id) => {
         type: 'template',
         payload: {
           template_type: 'button',
-          text: `Goodbye ${username}.\nWould you like to visit our website?`,
+          text: `Goodbye ${username}.\nWould you like to visit our website? `,
           buttons: [
             {
               type: 'web_url',
@@ -543,6 +532,7 @@ let sendMessageGoodBye = async (sender_id) => {
       },
     };
 
+    await markMessageSeen(sender_id);
     await sendTypingOn(sender_id);
     await sendMessage(sender_id, response2);
   } catch (e) {
