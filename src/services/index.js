@@ -530,7 +530,7 @@ let goBackToMainMenu = (sender_psid) => {
   sendMainMenu(sender_psid);
 };
 
-let sendMessageDoneReserveTable = async (sender_id) => {
+let sendMessageGoodBye = async (sender_id) => {
   try {
     let response = {
       attachment: {
@@ -552,22 +552,17 @@ let sendMessageDoneReserveTable = async (sender_id) => {
         type: 'template',
         payload: {
           template_type: 'button',
-          text: `Done! \nOur team will contact you as soon as possible ${username}.\n \nWould you like to check our Main Menu?`,
+          text: `Goodbye ${username}.\nWould you like to visit our website?`,
           buttons: [
             {
-              type: 'postback',
-              title: 'SHOW MAIN MENU',
-              payload: 'MAIN_MENU',
+              type: 'web_url',
+              url: `${process.env.FRONT_END_URL}`,
+              title: 'Visit now',
             },
             {
               type: 'phone_number',
               title: '☎ HOT LINE',
               payload: '+911911',
-            },
-            {
-              type: 'postback',
-              title: 'START OVER',
-              payload: 'RESTART_CONVERSATION',
             },
           ],
         },
@@ -741,7 +736,7 @@ module.exports = {
   getTypingNameCourses,
   sendAppetizer,
   goBackToMainMenu,
-  sendMessageDoneReserveTable,
+  sendMessageGoodBye,
   sendMessageDefaultForTheBot,
   markMessageSeen,
   sendTypingOn,

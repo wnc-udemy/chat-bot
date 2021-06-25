@@ -109,24 +109,14 @@ let handleMessage = async (sender_psid, message) => {
   await chatBotService.sendTypingOn(sender_psid);
   await chatBotService.markMessageSeen(sender_psid);
 
-  if (entity.name === 'wit$datetime:datetime') {
-    //handle quick reply message: asking about the party size , how many people
-    user.time = moment(entity.value).zone('+07:00').format('MM/DD/YYYY h:mm A');
-
-    await chatBotService.sendMessageAskingQuality(sender_psid);
-  } else if (entity.name === 'wit$phone_number:phone_number') {
-    //handle quick reply message: done reserve table
-
-    user.phoneNumber = entity.value;
-    user.createdAt = moment(Date.now())
-      .zone('+07:00')
-      .format('MM/DD/YYYY h:mm A');
-
-    // send messages to the user
-    await chatBotService.sendMessageDoneReserveTable(sender_psid);
-  } else if (entity.name === 'wit$greetings') {
+  if (entity.name === 'wit$greetings') {
+    let username = await chatBotService.getFacebookUsername(sender_psid);
+    user.name = username;
+    await chatBotService.sendResponseWelcomeNewCustomer(username, sender_psid);
   } else if (entity.name === 'wit$thanks') {
+    await chatBotService.sendMainMenu(sender_psid);
   } else if (entity.name === 'wit$bye') {
+    await chatBotService.sendMessageGoodBye(sender_psid);
   } else {
     //default reply
     await chatBotService.sendMessageDefaultForTheBot(sender_psid);
@@ -136,13 +126,7 @@ let handleMessage = async (sender_psid, message) => {
 };
 
 let handleMessageWithEntities = (message) => {
-  let entitiesArr = [
-    'wit$datetime:datetime',
-    'wit$phone_number:phone_number',
-    'wit$greetings',
-    'wit$thanks',
-    'wit$bye',
-  ];
+  let entitiesArr = ['wit$greetings', 'wit$thanks', 'wit$bye'];
   let entityChosen = '';
   let data = {}; // data is an object saving value and name of the entity.
   entitiesArr.forEach((name) => {
