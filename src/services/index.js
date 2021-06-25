@@ -116,7 +116,7 @@ let sendMainMenu = (sender_psid) => {
         },
       };
 
-      //send a image with button view main menu
+      await markMessageSeen(sender_psid);
       await sendTypingOn(sender_psid);
       await sendMessage(sender_psid, response_second);
 
@@ -128,9 +128,6 @@ let sendMainMenu = (sender_psid) => {
 };
 
 let sendCategories = async (sender_psid) => {
-  await markMessageSeen(sender_psid);
-  await sendTypingOn(sender_psid);
-
   const categoriesString = await requestPromise.get({
     url: `${process.env.BACK_END_URL}categories?type=1&limit=10&page=1`,
   });
@@ -157,6 +154,9 @@ let sendCategories = async (sender_psid) => {
       quick_replies: categoriesTemplate,
     },
   };
+
+  await markMessageSeen(sender_psid);
+  await sendTypingOn(sender_psid);
 
   // Send the HTTP request to the Messenger Platform
   request(
@@ -212,6 +212,9 @@ let sendSubCategories = async (sender_psid, categoryID) => {
     },
   };
 
+  await markMessageSeen(sender_psid);
+  await sendTypingOn(sender_psid);
+
   // Send the HTTP request to the Messenger Platform
   request(
     {
@@ -260,6 +263,7 @@ let sendCourseMenu = async (sender_psid) => {
         },
       };
 
+      await markMessageSeen(sender_psid);
       await sendTypingOn(sender_psid);
       await sendMessage(sender_psid, response);
       resolve('done');
@@ -422,6 +426,7 @@ let sendCourses = async (sender_psid, type, payload) => {
           },
         },
       };
+      await markMessageSeen(sender_psid);
       await sendTypingOn(sender_psid);
       await sendMessage(sender_psid, response);
       resolve('done');
@@ -484,6 +489,7 @@ let sendDetailCourse = async (sender_psid, courseID) => {
           },
         },
       };
+      await markMessageSeen(sender_psid);
       await sendTypingOn(sender_psid);
       await sendMessage(sender_psid, response);
       resolve('done');
@@ -507,6 +513,7 @@ let sendMessageGoodBye = async (sender_id) => {
         },
       },
     };
+    await markMessageSeen(sender_id);
     await sendTypingOn(sender_id);
     await sendMessage(sender_id, response);
 
@@ -581,8 +588,11 @@ let sendMessageDefaultForTheBot = (sender_psid) => {
           },
         },
       };
+
+      await markMessageSeen(sender_psid);
       await sendTypingOn(sender_psid);
       await sendMessage(sender_psid, response1);
+      await markMessageSeen(sender_psid);
       await sendTypingOn(sender_psid);
       await sendMessage(sender_psid, response2);
       resolve('done');

@@ -1,10 +1,6 @@
 require('dotenv').config();
 import request from 'request';
-import requestPromise from 'request-promise';
 import chatBotService from '../services';
-
-const BACK_END_URL = process.env.BACK_END_URL;
-const FRONT_END_URL = process.env.FRONT_END_URL;
 
 let user = {
   name: '',
@@ -76,8 +72,6 @@ let handleMessage = async (sender_psid, message) => {
     if (message.quick_reply.payload.includes('SUB_CATEGORY_ID')) {
       const subCategoryID = message.quick_reply.payload.substring(16);
 
-      await chatBotService.markMessageSeen(sender_psid);
-      await chatBotService.sendTypingOn(sender_psid);
       await chatBotService.sendCourses(sender_psid, 4, { subCategoryID });
       return;
     }
@@ -85,8 +79,6 @@ let handleMessage = async (sender_psid, message) => {
     if (message.quick_reply.payload.includes('CATEGORY_ID')) {
       const categoryID = message.quick_reply.payload.substring(12);
 
-      await chatBotService.markMessageSeen(sender_psid);
-      await chatBotService.sendTypingOn(sender_psid);
       await chatBotService.sendSubCategories(sender_psid, categoryID);
       return;
     }
@@ -96,8 +88,6 @@ let handleMessage = async (sender_psid, message) => {
 
       // console.log({ name });
 
-      await chatBotService.markMessageSeen(sender_psid);
-      await chatBotService.sendTypingOn(sender_psid);
       await chatBotService.sendCourses(sender_psid, 4, { name });
     }
     return;
@@ -105,17 +95,11 @@ let handleMessage = async (sender_psid, message) => {
 
   if (message && message.text) {
     const name = message.text;
-    await chatBotService.sendTypingOn(sender_psid);
-    await chatBotService.markMessageSeen(sender_psid);
-
     await chatBotService.sendCourses(sender_psid, 4, { name });
   }
 
   //handle text message
   let entity = handleMessageWithEntities(message);
-
-  await chatBotService.sendTypingOn(sender_psid);
-  await chatBotService.markMessageSeen(sender_psid);
 
   if (entity.name === 'wit$greetings') {
     let username = await chatBotService.getFacebookUsername(sender_psid);
