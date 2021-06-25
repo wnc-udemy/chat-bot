@@ -91,7 +91,7 @@ let handleMessage = async (sender_psid, message) => {
       return;
     }
 
-    if (message.quick_reply.payload !== ' ') {
+    if (message.quick_reply.payload !== '') {
       const name = message.quick_reply.payload;
 
       console.log({ name });
