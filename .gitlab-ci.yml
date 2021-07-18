@@ -1,15 +1,15 @@
-image: gcr.io/farmhub-313500/ubuntu-custom-image:v1.1.0
+image: gcr.io/farmhub-320109/ubuntu-custom-image:v1.3.0
 
 variables:
   IMAGE: chatbot-service
   IMAGE_NAME: $IMAGE-$CI_COMMIT_REF_NAME
   NAMESPACE: wnc-udemy
   HELM_VALUE: $CI_COMMIT_REF_NAME
-  HELM_VERSION: 0.6.0
-  FULLREPO: gcr.io/farmhub-313500/$IMAGE-$CI_COMMIT_REF_NAME
+  HELM_VERSION: 1.6.0
+  FULLREPO: gcr.io/farmhub-320109/$IMAGE-$CI_COMMIT_REF_NAME
 
 .predeploy: &predeploy |
-  helm repo add farmhub gs://farmhub-313500-helmcharts/deploychart
+  helm repo add farmhub gs://farmhub-core-helmcharts/deploychart
   helm pull farmhub/helm-template --untar=true --version $HELM_VERSION
 
 .replace_helm: &replace_helm |
