@@ -23,7 +23,7 @@ deploy:
   helm:
     releases:
     - name: <IMAGE_NAME>
-      chartPath: helm-template
+      chartPath: deploychart
       namespace: <NAMESPACE>
       artifactOverrides:
         image.repository: <FULLREPO>
