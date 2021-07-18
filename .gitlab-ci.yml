@@ -1,4 +1,4 @@
-image: gcr.io/farmhub-320109/ubuntu-custom-image:v1.3.0
+image: gcr.io/farmhub-core/ubuntu-custom-image:v1.3.0
 
 variables:
   IMAGE: chatbot-service
