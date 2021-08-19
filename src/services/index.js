@@ -327,7 +327,7 @@ let sendCourses = async (sender_psid, type, payload) => {
       let coursesTemplate;
 
       console.log({ abc: 'aaaaaaaaaaaa3' })
-      console.log({ BACK_END_URL: process.env.BACK_END_URL })
+      console.log({ BACK_END_URL: process.env.BACK_END_URL, type })
 
       if (type === 4) {
         if (subCategoryID !== undefined && name !== '' && name !== undefined) {
