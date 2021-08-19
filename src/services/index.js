@@ -133,7 +133,7 @@ let sendCategories = async (sender_psid) => {
   await markMessageSeen(sender_psid);
   await sendTypingOn(sender_psid);
 
-  console.log({ abc: 'aaaaaaaaaaaa' })
+  console.log({ abc: 'aaaaaaaaaaaa1' })
   console.log({ BACK_END_URL: process.env.BACK_END_URL })
 
   const categoriesString = await requestPromise.get({
@@ -185,7 +185,7 @@ let sendSubCategories = async (sender_psid, categoryID) => {
   await markMessageSeen(sender_psid);
   await sendTypingOn(sender_psid);
 
-  console.log({ abc: 'aaaaaaaaaaaa' })
+  console.log({ abc: 'aaaaaaaaaaaa2' })
   console.log({ BACK_END_URL: process.env.BACK_END_URL })
 
   const categoriesString = await requestPromise.get({
@@ -326,7 +326,7 @@ let sendCourses = async (sender_psid, type, payload) => {
       let coursesObj;
       let coursesTemplate;
 
-      console.log({ abc: 'aaaaaaaaaaaa' })
+      console.log({ abc: 'aaaaaaaaaaaa3' })
       console.log({ BACK_END_URL: process.env.BACK_END_URL })
 
       if (type === 4) {
@@ -450,7 +450,7 @@ let sendCourses = async (sender_psid, type, payload) => {
 let sendDetailCourse = async (sender_psid, courseID) => {
   return new Promise(async (resolve, reject) => {
     try {
-      console.log({ abc: 'aaaaaaaaaaaa' })
+      console.log({ abc: 'aaaaaaaaaaaa4' })
       console.log({ BACK_END_URL: process.env.BACK_END_URL })
 
       const courseString = await requestPromise.get({
