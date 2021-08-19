@@ -327,7 +327,7 @@ let sendCourses = async (sender_psid, type, payload) => {
       let coursesTemplate;
 
       console.log({ abc: 'aaaaaaaaaaaa3' })
-      console.log({ BACK_END_URL: process.env.BACK_END_URL, type })
+      console.log({ BACK_END_URL: process.env.BACK_END_URL, type, subCategoryID, name })
 
       if (type === 4) {
         if (subCategoryID !== undefined && name !== '' && name !== undefined) {
@@ -346,6 +346,8 @@ let sendCourses = async (sender_psid, type, payload) => {
           coursesString = await requestPromise.get({
             url: `${process.env.BACK_END_URL}courses?type=${type}&name=${name}&limit=3&page=1`,
           });
+
+          console.log({ coursesString })
 
           coursesObj = JSON.parse(coursesString).courses;
         }
