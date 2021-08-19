@@ -642,12 +642,13 @@ let sendMessage = (sender_psid, response) => {
           json: request_body,
         },
         (err, res, body) => {
-          console.log(res);
           console.log(body);
           if (!err) {
             console.log('message sent!');
             resolve('done!');
           } else {
+
+            console.log(err);
             reject('Unable to send message:' + err);
           }
         }
