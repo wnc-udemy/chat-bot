@@ -347,8 +347,6 @@ let sendCourses = async (sender_psid, type, payload) => {
             url: `${process.env.BACK_END_URL}courses?type=${type}&name=${name}&limit=3&page=1`,
           });
 
-          console.log({ coursesString })
-
           coursesObj = JSON.parse(coursesString).courses;
         }
       } else if (type === 1) {
@@ -429,6 +427,8 @@ let sendCourses = async (sender_psid, type, payload) => {
 
         coursesTemplate.push(goBackItem);
       }
+
+      console.log({ coursesTemplate })
 
       let response = {
         attachment: {
