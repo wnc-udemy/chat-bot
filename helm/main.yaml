@@ -77,7 +77,7 @@ ingress:
 configmap:
     PORT: 8080
     MY_VERIFY_FB_TOKEN: mystringtoken
-    FB_PAGE_TOKEN: EAADZA5eYVKDsBAPTg8EZCDjZAEBqvWQ1E7YAoK7YpfBArmRQ4V7i7qtsEflcuzsGMPLhNTdCrP2XqfTwdHXKVyDR9GXZBTZCi3wPIuTs9LnmcdfkFLuutLrmU83bZBxi7ZA2uxE9M7aEl4XXtfFfZBdhBU2yBlUTsMKqpgM6Ol6feH1ruyjtjwho
+    FB_PAGE_TOKEN: EAAReG2npRV8BAMyM1pvDb0YYuZCGaOJ8tCgclmWB8bpKDf4gvDLGXEesWOWE1FEbbbQAVAzTKpH2FFEDdZBl4IuAyphZBKPEshluNJob8AkqvZCB78PC4ThbcuSmmMRQnf9F4oB7UVPM2sVALqb5kwmu3uNaeO1KkWsQ9iFZB2SunJwSN92dP
     BACK_END_URL: https://wnc-backend.farmhub.asia/v1/
     FRONT_END_URL: https://wnc-frontend.farmhub.asia/
 
