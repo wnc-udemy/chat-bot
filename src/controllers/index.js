@@ -46,6 +46,8 @@ let postWebhook = (req, res) => {
 let getWebhook = (req, res) => {
   const VERIFY_TOKEN = process.env.MY_VERIFY_FB_TOKEN;
 
+  console.log({ VERIFY_TOKEN })
+
   // Parse the query params
   let mode = req.query['hub.mode'];
   let token = req.query['hub.verify_token'];
@@ -112,8 +114,7 @@ let handleMessage = async (sender_psid, message) => {
       await chatBotService.sendMessageGoodBye(sender_psid);
       return;
     } else if (name === 'cc' || name === 'loz' || name == 'oc') {
-      response = { text: 'Cút!!' };
-      callSendAPI(sender_psid, response);
+      callSendAPI(sender_psid, { text: 'Cút!!' });
       return;
     } else {
       await chatBotService.sendCourses(sender_psid, 4, { name });
