@@ -631,6 +631,8 @@ let sendMessage = (sender_psid, response) => {
         message: response,
       };
 
+      console.log({ access_token: process.env.FB_PAGE_TOKEN  })
+
       // Send the HTTP request to the Messenger Platform
       request(
         {
@@ -640,10 +642,10 @@ let sendMessage = (sender_psid, response) => {
           json: request_body,
         },
         (err, res, body) => {
-          // console.log(res);
-          // console.log(body);
+          console.log(res);
+          console.log(body);
           if (!err) {
-            // console.log('message sent!');
+            console.log('message sent!');
             resolve('done!');
           } else {
             reject('Unable to send message:' + err);
